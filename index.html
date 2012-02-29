@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+		body{background:black;}
+	</style>
+	<script type="text/javascript" src="engine.js"></script>
+	<script type="text/javascript" src="starfield.js"></script>
+	<script type="text/javascript">
+
+
+	window.onload = function(){
+		var _engine = makeEngine(document.getElementById("example"),makeTimer());
+		_engine.add( makeStarField( 200 ) );
+		_engine.start();
+	};
+
+	</script>
+
+</head>
+<body style="height: 100%;padding:0;margin:0">
+<canvas id="example" style="width: 90%; height: 90%;">
+This text is displayed if your browser does not support HTML5 Canvas.
+</canvas>
+</body>
+</html>
