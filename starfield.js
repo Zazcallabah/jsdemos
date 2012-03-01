@@ -41,7 +41,7 @@ var setifundefined = function( object, name, value )
 
 var combiner = function(c,r,g,b)
 {
-	return "rgb(" + c*r + "," + c*g + "," + c*b + ")";
+	return "rgb(" + Math.round(c*r) + "," + Math.round(c*g) + "," + Math.round(c*b) + ")";
 };
 
 var makeStar = function( stardata, settings )
@@ -51,89 +51,24 @@ var makeStar = function( stardata, settings )
 	if( settings === undefined )
 		settings = {};
 
-	setifundefined( stardata, "starsize", 3 );
-	setifundefined( stardata, "colorredbias", Math.random() );
-	setifundefined( stardata, "colorbluebias", Math.random() );
-	setifundefined( stardata, "colorgreenbias", Math.random() );
-	setifundefined( stardata, "starheight", Math.random() );
-	setifundefined( stardata, "startposition", Math.random()+0.1 );
+	setifundefined( stardata, "starsize", 10 );
+	setifundefined( stardata, "colorredbias", 1- Math.random()*0.2  );
+	setifundefined( stardata, "colorbluebias", 1- Math.random()*0.2 );
+	setifundefined( stardata, "colorgreenbias", 1- Math.random()*0.2 );
+	setifundefined( stardata, "starheight", Math.random() + 0.3 );
+	setifundefined( stardata, "startposition", Math.random() );
 	setifundefined( stardata, "rotationspeed", (Math.random() - 0.5) * 0.005 );
-	setifundefined( stardata, "starspeed", Math.random() / 1000 + +.01 );
+	setifundefined( stardata, "starspeed", Math.random() / 1000  +.001 );
 	setifundefined( stardata, "startangle",  Math.random() * 2 * Math.PI );
 
-	setifundefined( settings, "colorminposition", .3 );
-	setifundefined( settings, "colormaxposition", .95 );
+	setifundefined( settings, "colorminposition", .2 );
+	setifundefined( settings, "colormaxposition", .9 );
 	setifundefined( settings, "viewportheight", .5 );
 	setifundefined( settings, "viewportposition", .15 );
 	setifundefined( settings, "maxstarheight", 0.9 );
 
-	var colorer = makeColorer( settings.colorminposition*Math.sqrt(2), settings.colormaxposition*Math.sqrt(2) );
+	var colorer = makeColorer( settings.colorminposition, settings.colormaxposition );
 
-/*	var angle = stardata.startangle;
-
-	var actualmaxstarheight = ( settings.viewportheight / settings.viewportposition ) * settings.maxstarheight;
-	var height = actualmaxstarheight*stardata.starheight;
-
-	var xcoord = 0;
-	var ycoord = 0;
-	var zcoord = stardata.startposition;
-
-	var color = combiner(1000);
-	var distsqare = dist*dist;
-	var lll =Math.sqrt( zcoord*zcoord + distsqare )
-	var calc = setcolor( lll );
-
-	var star =
-	{
-		x: function()
-		{
-			return xcoord - (side/2) + 0.5;
-		},
-		y: function()
-		{
-			return ycoord -(side/2) +0.5;
-		},
-		z: function()
-		{
-			return lll;
-		},
-		drawsize: function()
-		{
-			return stardata.size * ( settings.viewportposition / lll );
-		},
-		color: "black"
-	};
-
-	var transform = function()
-	{
-		zcoord-=0.001;
-		angle += stardata.rotationspeed;
-
-			angle += speed;
-		else angle -= speed;
-		if( zcoord < 0 )
-			zcoord = 1;
-
-		var fovheight = (dist/zcoord) * settings.viewportposition;
-		if(fovheight < settings.viewportheight)
-		{
-			lll =Math.sqrt( zcoord*zcoord + distsqare )
-			calc = setcolor( lll );
-			side = Math.ceil( (calc) / 70 ) + 3;
-			color = combiner(
-				calc,
-				stardata.colorredbias,
-				stardata.colorgreenbias,
-				stardata.colorbluebias
-			);
-
-			xcoord = Math.floor( fovheight * Math.cos(angle) );
-			ycoord = Math.floor( fovheight * Math.sin(angle) );
-			show = true;
-		}
-		else show = false;
-	};
-	};*/
 	var polar = {
 		angle: stardata.startangle,
 		depth: stardata.startposition,
@@ -172,7 +107,9 @@ var makeStar = function( stardata, settings )
 		return combiner(val,stardata.colorredbias,stardata.colorgreenbias,stardata.colorbluebias);
 	};
 	var starsize = function(){
-		return stardata.starsize;
+		var val = (settings.viewportheight/settings.viewportposition)*polar.depth;
+		var ratio = (stardata.starsize/val)*settings.viewportheight;
+		return ratio;
 	};
 	var cartesian = {
 		x: function(){
@@ -187,10 +124,14 @@ var makeStar = function( stardata, settings )
 			tick();
 			context.fillStyle = this.color();
 			if( polar.length() < Math.sqrt(2) )
-				context.fillRect(
+			{
+				context.beginPath();
+				context.arc(
 					Math.floor((cartesian.x()+0.5)*canvaswidth),
 					Math.floor((cartesian.y()+0.5)*canvasheight),
-					starsize(),starsize());
+					starsize(), 0, Math.PI*2, true);
+				context.fill();
+			}
 		},
 		cartesian: cartesian,
 		polar: polar,

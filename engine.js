@@ -39,7 +39,8 @@ function makeEngine( canvas, timer )
 	{
 		var context = canvas.getContext("2d");
 		context.clearRect(0, 0, canvas.width, canvas.height);
-
+		context.canvas.width  = window.innerWidth-10;
+		context.canvas.height = window.innerHeight-10;
 		triggerWork(context, canvas.width, canvas.height);
 
 		// request new frame
