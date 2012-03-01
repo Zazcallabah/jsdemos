@@ -1,0 +1,342 @@
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+	<style type="text/css">
+
+		body{background:black;}
+
+	</style>
+
+	<script type="text/javascript" src="engine.js"></script>
+
+	<script type="text/javascript">
+
+
+
+	var timer2 = makeTimer();
+
+	var colorer = function( visible, gone )
+
+	{
+
+		var k = -255/(gone-visible);
+
+		var m = 255 - k*visible;
+
+		return function( distance ) {
+
+			if( distance < visible )
+
+				return 255;
+
+			if( distance > gone )
+
+				return 0;
+
+			return Math.floor(k*distance+m);
+
+		};
+
+	}
+
+
+
+	var makeStar = function(angle, depth, dist, report)
+
+	{
+
+		var dir = r(2);
+
+		var speed = r(1000) / 1000000;
+
+		var setcolor = colorer( 400,1550);
+
+		var combiner = function(c){
+
+			return "rgb(" + c + "," + c + "," + c + ")";
+
+		};
+
+
+
+		var windowheight = 500;
+
+		var windowdist = 200;
+
+		var side = 7;
+
+		var xcoord =0;
+
+		var ycoord =0;
+
+		var zcoord =depth;
+
+		var show = true;
+
+		var color = combiner(1000);
+
+		var distsqare = dist*dist;
+
+		var lll =Math.sqrt( zcoord*zcoord + distsqare )
+
+		var calc = setcolor( lll );
+
+
+
+		var transform = function()
+
+		{
+
+			zcoord-=5;
+
+			if( dir === 0 )
+
+				angle += speed;
+
+			else angle -= speed;
+
+			if( zcoord < 0 )
+
+			{
+
+				if( report !== undefined )
+
+					report();
+
+				zcoord = 5000;
+
+			}
+
+			var fovheight = (dist/zcoord)*windowdist;
+
+			if(fovheight <windowheight)
+
+			{
+
+				lll =Math.sqrt( zcoord*zcoord + distsqare )
+
+				calc = setcolor( lll );
+
+				side = Math.ceil( (calc) / 70 ) + 3;
+
+				color = combiner( calc );
+
+
+
+				xcoord = Math.floor( fovheight * Math.cos(angle) );
+
+				ycoord = Math.floor( fovheight * Math.sin(angle) );
+
+				show = true;
+
+			}
+
+			else show = false;
+
+		};
+
+		var star =
+
+		{
+
+			x: function()
+
+			{
+
+				return xcoord - Math.floor(side/2) + 400;
+
+			},
+
+			y: function()
+
+			{
+
+				return ycoord - Math.floor( side/2) +400;
+
+			},
+
+			z: function()
+
+			{
+
+				return lll;
+
+			},
+
+			size: function()
+
+			{
+
+				return side;
+
+			}
+
+		};
+
+		star.next = function(context)
+
+		{
+
+			//			context.clearRect(star.x(),star.y(),star.size(),star.size());
+
+			transform();
+
+			context.fillStyle = color;
+
+			if( show )
+
+				context.fillRect(star.x(),star.y(),star.size(),star.size());
+
+		};
+
+		return star;
+
+	};
+
+
+
+	var makeStarField = function()
+
+	{
+
+		var sortfunction = function(a,b){
+
+			return b.z() - a.z();
+
+		};
+
+		var stars = [];
+
+		var length = r( 50 ) +100;
+
+		while( length-- > 0 )
+
+		{
+
+			var s = makeStar( Math.random() * 2*3.14159,r(5000),r(1000)+80);
+
+			stars.push(s);
+
+		}
+
+		return function( context ) {
+
+
+
+			stars.sort(sortfunction);
+
+			for( var i = 0; i<stars.length; i++ )
+
+			{
+
+				stars[i%stars.length].next(context);
+
+			}
+
+		};
+
+	};
+
+
+
+	var sf = makeStarField();
+
+
+
+		window.requestAnimFrame = (function(callback){
+
+			return window.requestAnimationFrame ||
+
+					window.webkitRequestAnimationFrame ||
+
+					window.mozRequestAnimationFrame ||
+
+					window.oRequestAnimationFrame ||
+
+					window.msRequestAnimationFrame ||
+
+					function(callback){
+
+
+
+						window.setTimeout(callback, 1000 / 500);
+
+					};
+
+		})();
+
+
+
+		function animate(){
+
+			var canvas = document.getElementById("example");
+
+			var context = canvas.getContext("2d");
+
+			context.clearRect(0, 0, canvas.width, canvas.height);
+
+			timer2.report();
+
+			// draw
+
+			sf(context);
+
+
+
+			// request new frame
+
+			requestAnimFrame(function(){
+
+				animate();
+
+			});
+
+		};
+
+
+
+		window.onload = function(){
+
+			animate();
+
+		};
+
+
+
+
+
+
+
+
+
+
+
+	function r( max )
+
+	{
+
+		return Math.floor(Math.random()*max);
+
+	}
+
+	</script>
+
+
+
+</head>
+
+<body style="padding:0;margin:0">
+
+<canvas id="example" width="800" height="800">
+
+This text is displayed if your browser does not support HTML5 Canvas.
+
+</canvas>
+
+</body>
+
+</html>

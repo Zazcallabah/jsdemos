@@ -51,14 +51,14 @@ var makeStar = function( stardata, settings )
 	if( settings === undefined )
 		settings = {};
 
-	setifundefined( stardata, "starsize", 7 );
+	setifundefined( stardata, "starsize", 3 );
 	setifundefined( stardata, "colorredbias", Math.random() );
 	setifundefined( stardata, "colorbluebias", Math.random() );
 	setifundefined( stardata, "colorgreenbias", Math.random() );
 	setifundefined( stardata, "starheight", Math.random() );
-	setifundefined( stardata, "startposition", Math.random() );
-	setifundefined( stardata, "rotationspeed", (Math.random() - 0.5) * 0.05 );
-	setifundefined( stardata, "starspeed", Math.random() / 100 );
+	setifundefined( stardata, "startposition", Math.random()+0.1 );
+	setifundefined( stardata, "rotationspeed", (Math.random() - 0.5) * 0.005 );
+	setifundefined( stardata, "starspeed", Math.random() / 1000 + +.01 );
 	setifundefined( stardata, "startangle",  Math.random() * 2 * Math.PI );
 
 	setifundefined( settings, "colorminposition", .3 );
@@ -67,9 +67,9 @@ var makeStar = function( stardata, settings )
 	setifundefined( settings, "viewportposition", .15 );
 	setifundefined( settings, "maxstarheight", 0.9 );
 
+	var colorer = makeColorer( settings.colorminposition*Math.sqrt(2), settings.colormaxposition*Math.sqrt(2) );
 
 /*	var angle = stardata.startangle;
-	var setcolor = makeColorer( settings.colorminposition, settings.colormaxposition );
 
 	var actualmaxstarheight = ( settings.viewportheight / settings.viewportposition ) * settings.maxstarheight;
 	var height = actualmaxstarheight*stardata.starheight;
@@ -137,14 +137,19 @@ var makeStar = function( stardata, settings )
 	var polar = {
 		angle: stardata.startangle,
 		depth: stardata.startposition,
+		_length: null,
 		length: function(){
-			return stardata.starheight * settings.viewportposition / this.depth;
+			if(this._length === null )
+				this._length = stardata.starheight * settings.viewportposition / this.depth;
+			return this._length;
 		},
+		_hyp: null,
 		hyp: function(){
-			return Math.sqrt(this.depth*this.depth + stardata.starheight*stardata.starheight);
+			if(this._hyp===null)
+				this._hyp= Math.sqrt(this.depth*this.depth + stardata.starheight*stardata.starheight);
+			return this._hyp;
 		}
 	};
-	var visible = true;
 
 	var tick = function(){
 
@@ -159,12 +164,15 @@ var makeStar = function( stardata, settings )
 			polar.depth += 1;
 		else if( polar.depth > 1 )
 			polar.depth -= 1;
+		polar._hyp = null;
+		polar._length = null;
 	};
 	var color = function(){
-		return "white";
+		var val = colorer(polar.hyp());
+		return combiner(val,stardata.colorredbias,stardata.colorgreenbias,stardata.colorbluebias);
 	};
 	var starsize = function(){
-		return 4;
+		return stardata.starsize;
 	};
 	var cartesian = {
 		x: function(){
@@ -180,15 +188,14 @@ var makeStar = function( stardata, settings )
 			context.fillStyle = this.color();
 			if( polar.length() < Math.sqrt(2) )
 				context.fillRect(
-					Math.round((cartesian.x()+0.5)*canvaswidth),
-					Math.round((cartesian.y()+0.5)*canvasheight),
+					Math.floor((cartesian.x()+0.5)*canvaswidth),
+					Math.floor((cartesian.y()+0.5)*canvasheight),
 					starsize(),starsize());
 		},
 		cartesian: cartesian,
 		polar: polar,
 		color: color,
 		tick : tick,
-		isvisible: visible,
 		starsize: starsize
 	};
 };
