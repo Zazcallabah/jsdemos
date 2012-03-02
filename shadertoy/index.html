@@ -1,0 +1,306 @@
+﻿<!doctype html>
+<html>
+
+
+<head>
+<title>Shader Toy</title>
+<meta name="Author" content="Iñigo Quilez">
+
+<script type="text/javascript" src="effect.js"></script>
+<script type="text/javascript" src="shadertoy.js"></script>
+<script type="text/javascript" src="linesForTextarea.js"></script>
+
+<script type="text/javascript">
+var gShaderToy = null;
+
+function myInit()
+{
+    addLinesToTextArea('myShaderCode');
+
+    //var mycodepress = document.getElementById("myShaderCode").contentWindow.Engine;
+    //mycodepress.initialize()
+    //gShaderToy = new ShaderToy(mycodepress);
+    gShaderToy = new ShaderToy(null);
+    if( !gShaderToy.mCreated )
+        return;
+
+    //look in the url for the shader to be loaded
+    var shadername = "deform";
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for( var i=0; i<hashes.length; i++ )
+    {
+        var hash = hashes[i].split('=');
+        if( hash[0] == "p" )
+        {
+            shadername = decodeURI(hash[1]).toLowerCase().replace(/\s/g, "");
+            break;
+        }
+    }
+    // set the combo box
+    var no = document.getElementById("myPresets").options;
+    for( var i=0; i<no.length; i++ )
+    {
+        if( no[i].value == shadername )
+        {
+              document.getElementById("myPresets").selectedIndex = i;
+              break;
+        }
+    }
+
+
+    var res = gShaderToy.newScript("presets/"+shadername+".xml");
+    gShaderToy.startRendering();
+    if( !res )
+    {
+        gShaderToy.pauseTime();
+        gShaderToy.resetTime();
+    }
+}
+
+
+function loadPreset()
+{
+    var no=document.getElementById("myPresets");
+    var txt = "presets/" + no.options[no.selectedIndex].value + ".xml";
+    gShaderToy.newScript( txt );
+}
+
+
+
+</script>
+</head>
+
+<body onload="myInit()">
+<link href="style.css" rel=stylesheet type=text/css>
+
+<!-- --------------------------------------------------------------------------------- -->
+<table border="0" align="center" width="100%">
+<tr>
+  <td width="8"></td>
+  <td align="left" style='font-size:12px'>
+    <font style='font-size:36px'>Shader Toy v0.3</font> by Inigo Quilez 2009 (iq/rgba), <a style="text-decoration:none" href="http://www.iquilezles.org">http://www.iquilezles.org</a><br><br>
+    <font style='font-size:11px'>
+    · 44 shader, 16 contributors: Adrian Boeing, Auld, Danguafer/Silexars, Lars Huttar, L.Mallet, Mic, Psycho/Loonies, Paulo Falcao, Simon Green/NVidia, TGGC/BluFlame, Tigrou, Viktor Korsun, W.Yutani, XT95/FRequency, xTr1m/BluFlame and iq/rgba (send me your shaders if you want to contribute - for now i keep the right to decide which shaders to upload based on some sort of "quantity vs variety" criteria)<br>
+    <font color="ffff00">· Please remember it probably makes sense to credit the authors if you reuse these shaders in your blog, software,
+demo, or portafolio. Also, the authors definitely want you to let them know if you plan to use their shaders in your applications or products.</font><br>
+    · You can directly link to Shader Toy with a shader preset parameter like this: "http://www.iquilezles.org/apps/shadertoy/?p=Radial%20Blur" or "http://www.iquilezles.org/apps/shadertoy/?p=radialblur"
+    </font>
+
+  </td>
+
+  <td width="8"></td> 
+</tr> 
+</table> 
+ 
+<!-- --------------------------------------------------------------------------------- --> 
+<br> 
+ 
+<table border="0"> 
+<tr> 
+ 
+  <td width="8"></td> 
+ 
+  <td valign="top" > 
+    <table class="guiWindow"> 
+    <tr><td class="windotTitle">Options</td></tr> 
+    <tr><td> 
+       <table style="font-size:12"> 
+       <tr><td> 
+       Width <input type="text" class="userInput" id="myXResolution" value="512" style="width:40px" title="horizontal resolution, in pixels" onChange="javascript:gShaderToy.resize()"> 
+       </td></tr> 
+       <tr><td> 
+        Height <input type="text" class="userInput" id="myYResolution" value="384" style="width:40px" title="vertical resolution, in pixels" onChange="javascript:gShaderToy.resize()"> 
+       </td></tr> 
+       </table>
+    </td></td> 
+    </table> 
+  </td> 
+ 
+  <td width="8"></td> 
+ 
+  <td valign="top" > 
+    <table class="guiWindow"> 
+    <tr><td class="windotTitle">Inputs</td></tr> 
+    <tr><td> 
+       <table style="font-size:12"> 
+<!--        <tr><td>Shader</td><td><input type="text" class="userInput" value="" id="myScript" value="" style="width:380px" onChange="javascript:gShaderToy.setShader(this.value)" title="the url of the text file containing the shader source code"></td></tr> -->
+        <tr><td>unit 0</td><td><input type="text" class="userInput" id="myTexture0" value="" style="width:380px" onChange="javascript:gShaderToy.setTexture(0,this.value)" title="url of an image"></td></tr> 
+        <tr><td>unit 1</td><td><input type="text" class="userInput" id="myTexture1" value="" style="width:380px" onChange="javascript:gShaderToy.setTexture(1,this.value)" title="url of an image"></td></tr> 
+        <tr><td>unit 2</td><td><input type="text" class="userInput" id="myTexture2" value="" style="width:380px" onChange="javascript:gShaderToy.setTexture(2,this.value)" title="url of an image"></td></tr>
+        <tr><td>unit 3</td><td><input type="text" class="userInput" id="myTexture3" value="" style="width:380px" onChange="javascript:gShaderToy.setTexture(3,this.value)" title="url of an image"></td></tr> 
+       </table> 
+    </td></td> 
+    </table> 
+  </td> 
+ 
+  <td width="8"></td> 
+ 
+  <td valign="top"> 
+    <table class="guiWindow"> 
+     <tr><td class="windotTitle">Information</td></tr>
+     <tr><td valign="top"> 
+ 
+     <table style="font-size:12"> 
+       <tr><td> 
+       <a href="http://www.gooogle.com" id="myInfo" style="text-decoration:none">Author</a> 
+       </td></tr> 
+       <tr><td> 
+       <!--Comments<br>-->
+       <textarea class="userInput" rows="4" cols="40" readonly="readonly" id="myComments"></textarea> 
+       </td></tr>
+     </table> 
+
+     </td></tr>
+    </table>
+
+  </td>
+
+  <td width="8"></td>
+
+  <td valign="top">
+    <table class="guiWindow">
+     <tr><td class="windotTitle">Presets</td></tr>
+     <tr><td>
+     <select class="userInput" id="myPresets">
+        <optgroup label="2D Effects">
+          <option value="radialblur">Radial Blur</option>
+          <option value="motionblur">Motion Blur</option>
+          <option value="postpro">Postprocesing</option>
+          <option value="julia">Julia</option>
+          <option value="mandel">Mandel</option>
+          <option value="multitexture">Multitexture</option>
+          <option value="flower">Flower</option>
+          <option value="heart">Heart</option>
+          <option value="sierpinski">Sierpinski</option>
+          <option value="metablob">Metablob</option>
+          <option value="plasma">Plasma</option>
+          <option value="shapes">Shapes</option>
+          <option value="water">Water</option>
+        </optgroup>
+
+        <optgroup label="Plane Deformations">
+          <option value="deform" selected>Deform</option>
+          <option value="monjori">Monjori</option>
+          <option value="star">Star</option>
+          <option value="twist">Twist</option>
+          <option value="kaleidoscope">Kaleidoscope</option>
+          <option value="zinvert">Z Invert</option>
+          <option value="tunnel">Tunnel</option>
+          <option value="relieftunnel">Relief Tunnel</option>
+          <option value="squaretunnel">Square Tunnel</option>
+          <option value="fly">Fly</option>
+          <option value="pulse">Pulse</option>
+        </optgroup>
+
+        <optgroup label="3D">
+          <option value="apple">Apple</option>
+          <option value="704">704</option>
+          <option value="ttroribbon">To The Road Of Ribbon</option>
+          <option value="chocolux">Chocolux</option>
+          <option value="nautilus">Nautilus</option>
+          <option value="mengersponge">Menger Sponge</option>
+          <option value="clod">Clod</option>
+          <option value="earth">Earth</option>
+          <option value="slisesix">Slisesix</option>
+          <option value="sult">Sult</option>
+          <option value="valleyball">Valleyball</option>
+          <option value="kinderpainter">Kinderpainter</option>
+          <option value="red">Red</option>
+          <option value="quaternion">Quaternion</option>
+          <option value="lunaquatic">Lunaquatic</option>
+          <option value="metatunnel">Metatunnel</option>
+          <option value="droid">Droid</option>
+          <option value="disco">Disco</option>
+          <option value="mandelbulb">Mandelbulb</option>
+          <option value="leizex">Leizex</option>
+        </optgroup>
+     </select>
+     <input type="button" value="Load" class="userInputButtons" title="load the selected preset" onClick="loadPreset()"/>
+     </td></tr>
+    </table>
+
+  </td>
+
+
+  <td width="8"></td>
+
+</tr>
+</table>
+
+<!-- --------------------------------------------------------------------------------- -->
+
+<table border="0">
+<tr> 
+ 
+ <td valign="top" width="8"></td> 
+ 
+ <td valign="top" align="left"> 
+ 
+     <table class="guiWindow"> 
+     <tr><td class="windotTitle">Render</td></tr> 
+     <tr><td> 
+      <table> 
+      <tr> 
+      <td width="54" id="myFramerate">0.0 fps</td> 
+      <td width="4"></td> 
+      <td width="60" id="myTime">0.00 s</td> 
+      <td width="4"></td> 
+      <td><input type="image" src="rewind.png" onclick="javascript:gShaderToy.resetTime()" style="" title="reset time" id="myResetButton"/></td> 
+      <td width="2"></td> 
+      <td><input type="image" src="pause.png" onclick="javascript:gShaderToy.pauseTime();" style="" title="pause/resume" id="myPauseButton"/></td> 
+      </tr> 
+      </table> 
+
+     </td></tr> 
+     <tr><td> 
+     <canvas id="demogl" width="512" height="384"></canvas>
+     </td></tr>
+     </table> 
+ 
+ </td> 
+ 
+ <td valign="top" width="8"></td> 
+ 
+ <td align="left" valign="top"> 
+ 
+     <table class="guiWindow"> 
+     <tr><td colspan="2" class="windotTitle">Source</td></tr> 
+ 
+     <tr> 
+     <td width="32px"></td> 
+     <td> 
+      <table> 
+      <tr> 
+      <td><input type="image" src="compile.png" onclick="javascript:gShaderToy.newShader()" style="" title="compile (<ALT>+<ENTER>)" id="myResetButton"/></td> 
+      <td width="8px"></td> 
+      <td><input type="image" src="help.png" style="" title="help" onclick="window.open('help.html','Help','width=760,height=480,status=yes,toolbar=no,scrollbars=yes')"/></td> 
+      </tr> 
+      </table>
+     </td>
+     </tr>
+
+
+     <tr>
+     <td width="32px" id="linesColumn"></td>
+     <td valign="top">
+     <textarea rows="24" cols="80" class="userInput" style="font-family:'courier';font-size:14" id="myShaderCode" wrap="off"></textarea>
+     </td>
+     </tr>
+
+     <tr>
+     <td width="32px"></td>
+     <td>
+     <textarea type="text" rows="3" cols="80" class="userInput" style="font-family:'courier';font-size:14" readonly="readonly" value="" id="errorTxtBox" ></textarea>
+     </td>
+     </tr>
+     </table>
+
+ </td>
+
+ <td valign="top" width="8"></td> 
+ 
+</tr> 
+</table> 
+ 
+</body> 
+</html> 

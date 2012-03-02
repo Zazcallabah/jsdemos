@@ -8,13 +8,15 @@ function makeTimer()
 			{
 				mark = new Date().getTime();
 			}
-			else if(counter > 1000 )
+			else if(counter > 100 )
 			{
 				var took = new Date().getTime()-mark;
 				counter =0;
 				mark=new Date().getTime();
-				console.log(1000/(took/1000));
-
+				var load = took/100;
+				var fps = 1000/load;
+				console.log(fps);
+				document.getElementById("fps").innerText = "Load: "+Math.round(load) + "\nFPS: "+Math.round(fps);
 			}
 			counter++;
 		}
@@ -24,24 +26,25 @@ function makeTimer()
 function makeEngine( canvas, timer )
 {
 	var workers = [];
-	var triggerWork = function(context, width, height )
+	var triggerWork = function(context, width, height, mark )
 	{
 		if(timer!== undefined)
 			timer.report();
 
 		for (var worker in workers)
 		{
-			workers[worker](context, width, height);
+			workers[worker](context, width, height, mark);
 		}
 	};
 
 	var animate = function()
 	{
 		var context = canvas.getContext("2d");
+		var frameTimeStamp = new Date().getTime() - startTime;
 		context.clearRect(0, 0, canvas.width, canvas.height);
 		context.canvas.width  = window.innerWidth-10;
-		context.canvas.height = window.innerHeight-10;
-		triggerWork(context, canvas.width, canvas.height);
+		context.canvas.height = window.innerHeight-50;
+		triggerWork(context, canvas.width, canvas.height, frameTimeStamp );
 
 		// request new frame
 		requestAnimFrame(function(){
@@ -63,13 +66,27 @@ function makeEngine( canvas, timer )
 
 
 
-
+	var startTime = undefined;
 
 	return {
 		add: function( fn )
 		{
 			workers.push(fn);
 		},
-		start: animate
+		start: function(){
+			startTime = new Date().getTime();
+			animate();
+		},
+		increaseLoad: function()
+		{
+			this.add( function(){
+				var data = 5.3;
+				for( var i = 0; i<100000; i++ )
+				{
+					data *= 3.2 + data;
+				}
+			});
+			document.getElementById("slower").innerText="slower "+workers.length;
+		}
 	};
 }

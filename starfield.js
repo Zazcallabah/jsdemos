@@ -10,12 +10,12 @@ var makeStarField = function(count)
 		var s = makeStar();
 		stars.push(s);
 	}
-	return function( context, width, height ) {
+	return function( context, width, height, mark ) {
 
 		stars.sort(sortfunction);
 		for( var i = 0; i<stars.length; i++ )
 		{
-			stars[i].draw(context,width,height);
+			stars[i].draw(context,width,height,mark);
 		}
 	};
 };
@@ -57,8 +57,8 @@ var makeStar = function( stardata, settings )
 	setifundefined( stardata, "colorgreenbias", 1- Math.random()*0.2 );
 	setifundefined( stardata, "starheight", Math.random() + 0.3 );
 	setifundefined( stardata, "startposition", Math.random() );
-	setifundefined( stardata, "rotationspeed", (Math.random() - 0.5) * 0.005 );
-	setifundefined( stardata, "starspeed", Math.random() / 1000  +.001 );
+	setifundefined( stardata, "rotationspeed", (Math.random() - 0.5) * 0.0007 );
+	setifundefined( stardata, "starspeed", Math.random() / 1000  +.0001 );
 	setifundefined( stardata, "startangle",  Math.random() * 2 * Math.PI );
 
 	setifundefined( settings, "colorminposition", .2 );
@@ -70,8 +70,8 @@ var makeStar = function( stardata, settings )
 	var colorer = makeColorer( settings.colorminposition, settings.colormaxposition );
 
 	var polar = {
-		angle: stardata.startangle,
-		depth: stardata.startposition,
+		angle: 0,
+		depth: 0,
 		_length: null,
 		length: function(){
 			if(this._length === null )
@@ -85,16 +85,27 @@ var makeStar = function( stardata, settings )
 			return this._hyp;
 		}
 	};
+	var conformer = function(min,max,diff){
+		return function( mark, start ){
+			var delta = max-min;
+			return (mark*diff + start) % delta;
+		};
+	};
 
-	var tick = function(){
+	var conformdepth = conformer( 0, 1, -1* stardata.starspeed );
+	var conformangle = conformer( 0, 2*Math.PI,stardata.rotationspeed);
 
-		polar.angle += stardata.rotationspeed;
+	var tick = function( mark ){
+
+
+		polar.angle = conformangle( mark,stardata.startangle );
+		//stardata.rotationspeed;
 		if( polar.angle < 0 )
 			polar.angle += 2*Math.PI;
 		else if( polar.angle > 2 * Math.PI )
 			polar.angle -= 2*Math.PI;
 
-		polar.depth -= stardata.starspeed;
+		polar.depth = conformdepth(mark,stardata.startposition);//stardata.starspeed;
 		if( polar.depth < 0 )
 			polar.depth += 1;
 		else if( polar.depth > 1 )
@@ -120,8 +131,8 @@ var makeStar = function( stardata, settings )
 		}
 	};
 	return {
-		draw: function(context, canvaswidth, canvasheight) {
-			tick();
+		draw: function(context, canvaswidth, canvasheight, mark) {
+			tick(mark);
 			context.fillStyle = this.color();
 			if( polar.length() < Math.sqrt(2) )
 			{
