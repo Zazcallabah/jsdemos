@@ -1,24 +1,26 @@
 function makeTimer()
 {
-	var counter = 0;
+	var counter = null;
 	var mark = 0;
 	return {
 		report: function(){
-			if(counter === 0)
+			if(counter === null)
 			{
 				mark = new Date().getTime();
 			}
-			else if(counter > 100 )
+			counter++;
+
+			var took = new Date().getTime() - mark;
+
+
+			if( took > 1000 )
 			{
-				var took = new Date().getTime()-mark;
-				counter =0;
-				mark=new Date().getTime();
-				var load = took/100;
+				var load = took/counter;
 				var fps = 1000/load;
 				console.log(fps);
 				document.getElementById("fps").innerText = "Load: "+Math.round(load) + "\nFPS: "+Math.round(fps);
+				counter =0;
 			}
-			counter++;
 		}
 	};
 }

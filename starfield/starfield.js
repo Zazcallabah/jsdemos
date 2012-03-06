@@ -52,9 +52,9 @@ var makeStar = function( stardata, settings )
 		settings = {};
 
 	setifundefined( stardata, "starsize", 10 );
-	setifundefined( stardata, "colorredbias", 1- Math.random()*0.2  );
-	setifundefined( stardata, "colorbluebias", 1- Math.random()*0.2 );
-	setifundefined( stardata, "colorgreenbias", 1- Math.random()*0.2 );
+	setifundefined( stardata, "colorredbias", 1- Math.random()*0.8  );
+	setifundefined( stardata, "colorbluebias", 1- Math.random()*0.8 );
+	setifundefined( stardata, "colorgreenbias", 1- Math.random()*0.8 );
 	setifundefined( stardata, "starheight", Math.random() + 0.3 );
 	setifundefined( stardata, "startposition", Math.random() );
 	setifundefined( stardata, "rotationspeed", (Math.random() - 0.5) * 0.0007 );

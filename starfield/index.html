@@ -3,19 +3,23 @@
 <head>
 	<style type="text/css">
 		body{background:black;color:white;}
+		#fps, #slower { display: none; }
 	</style>
 	<script type="text/javascript" src="engine.js"></script>
 	<script type="text/javascript" src="starfield.js"></script>
 	<script type="text/javascript">
-var _engine = undefined;
-	window.onload = function(){
+		var _engine = undefined;
+		window.onload = function(){
+		if( document.location.hash = "#debug" )
+		{
+			document.getElementById("fps").style.display = "block";
+			document.getElementById("slower").style.display = "block";
+		}
 		_engine = makeEngine(document.getElementById("example"),makeTimer());
 		_engine.add( makeStarField( 50 ) );
 		_engine.start();
 	};
-
 	</script>
-
 </head>
 <body style="height: 100%;padding:0;margin:0">
 <div id="fps"></div><button id="slower" onclick="_engine.increaseLoad()">slower</button>
