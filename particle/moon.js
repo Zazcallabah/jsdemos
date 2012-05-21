@@ -11,10 +11,21 @@ var vec = function vec( par )
 		x: function(){return _x;},
 		y: function(){return _y;},
 		z: function(){return _z;},
-		mul: function( scal ) { return vec( {x:scal*_x,y:scal*_y,z:scal*_z} ); },
-		add: function( v ) { return vec({x:v.x()+_x,y:v.y()+_y,z:v.z()+_z}); },
-		sub: function( v ) {return vec({y:v.x()-_x,y:v.y()-_y,z:v.z()-_z}); },
-		projectOn: function(plane)
+		dot: function( v ) { return _x* v.x() + _y* v.y() + _z* v.z(); },
+		cross: function( v ) { return vec({
+			x:_y* v.z()-_z* v.y(),
+			y:_z* v.x()-_x* v.z(),
+			z:_x* v.y()-_y* v.x()
+		});
+			},
+		mul: function( scal ) {
+			return vec( {x:scal*_x,y:scal*_y,z:scal*_z} );
+		},
+		add: function( v ) {
+			return vec({x:v.x()+_x,y:v.y()+_y,z:v.z()+_z});
+		},
+		sub: function( v ) {return vec({x:v.x()-_x,y:v.y()-_y,z:v.z()-_z}); },
+		projectOnPlane: function(plane)
 		{
 			var c1 =
 				(plane.u1().x() * _x) +
@@ -63,20 +74,29 @@ var makeMoon = function()
 
 var makeView = function()
 {
-	var projectionplane = plane( {u:vec({x:0,y:1,z:0}), v:vec({x:1,y:0,z:0}),p:vec()} );
+	var u = vec({x:1,y:0,z:0});
+	var v = vec({x:0,y:1,z:0});
+	var n = u.cross( v );
+
 	return {
 		tick: function(){ /* move viewport */ },
-		pl: function() { return projectionplane; }
+		u: function() { return u; },
+		v: function() { return v; },
+		n: function() { return n; },
+		fov: 100,
+		pos: function() { return vec(); }
 	};
 };
 
 var makeParticle = function()
 {
-	var position = vec();
-	var velocity = vec({x:1,y:1,z:1});
+	var position = vec({x:-50,y:-30,z: 0});
+	var velocity = vec({x:1,y:1,z:-1});
 	return {
 		pos: function() { return position; },
-		tick: function(dt) { position = position.add( velocity*dt ); },
+		tick: function(dt) {
+			position = position.add( velocity.mul(dt) );
+		},
 		r: function(){ return 5;}
 	};
 };
@@ -89,25 +109,30 @@ var makeMoonSim = function()
 	var lastmark = -1;
 
 	return function( context, width, height, mark ) {
+
 		if( lastmark < 0 )
 			lastmark =mark;
 		moon.tick();
 		viewport.tick();
-		particle.tick( mark-lastmark ); //scale
+		particle.tick( (mark-lastmark)/1000 ); //scale
 
-		var v = particle.pos().sub( viewport.pos() );
-		var pv = v.projectOn( viewport.pl() );
+		var p = particle.pos().sub( viewport.pos() );
+		var ndist = p.dot( viewport.n() );
+		if( ndist > 0 )
+		{
+			var x = p.dot( viewport.u());
+			var y = p.dot( viewport.v());
+			var cx = (x*ndist) / (ndist+viewport.fov);
+			var cy = (y*ndist) / (ndist+viewport.fov);
 
-		context.beginPath();
-//		context.arc( pv.
-			//Math.floor((cartesian.x()+0.5)*canvaswidth),
-//			Math.floor((cartesian.y()+0.5)*canvasheight),
-//			starsize(), 0, Math.PI*2, true);
-		context.fill();
-
-
-
-
+			if( cx < viewport.fov && cy < viewport.fov && cx >= 0 && cy >= 0 )
+			{
+				context.fillStyle = "white";
+				context.beginPath();
+				context.arc( x,y,10,0, Math.PI*2, true);
+				context.fill();
+			}
+		}
 		lastmark = mark;
 	};
 };

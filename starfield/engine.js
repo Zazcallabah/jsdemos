@@ -20,6 +20,7 @@ function makeTimer()
 				console.log(fps);
 				document.getElementById("fps").innerText = "Load: "+Math.round(load) + "\nFPS: "+Math.round(fps);
 				counter =0;
+				mark=new Date().getTime();
 			}
 		}
 	};
