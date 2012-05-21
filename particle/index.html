@@ -4,29 +4,22 @@
 	<style type="text/css">
 		body{background:black;color:white;}
 		a{color:black}
-		#fps, #slower { display: none; }
 	</style>
 	<script type="text/javascript" src="engine.js"></script>
-	<script type="text/javascript" src="starfield.js"></script>
+	<script type="text/javascript" src="moon.js"></script>
 	<script type="text/javascript">
 		var _engine = undefined;
 		window.onload = function(){
-		if( document.location.hash === "#debug" )
-		{
-			document.getElementById("fps").style.display = "block";
-			document.getElementById("slower").style.display = "block";
-		}
 		_engine = makeEngine(document.getElementById("example"),makeTimer());
-		_engine.add( makeStarField( 50 ) );
+		_engine.add( makeMoonSim() );
 		_engine.start();
 	};
 	</script>
 </head>
 <body style="height: 100%;padding:0;margin:0">
-<div id="fps"></div><button id="slower" onclick="_engine.increaseLoad()">slower</button>
+<div id="fps"></div>
 <canvas id="example">
 This text is displayed if your browser does not support HTML5 Canvas.
 </canvas>
-<a href="#debug">debug mode</a>
 </body>
 </html>

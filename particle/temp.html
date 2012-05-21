@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+		body{background:black;color:white;}
+	</style>
+	<script type="text/javascript" src="engine.js"></script>
+	<script type="text/javascript" src="roto.js"></script>
+	<script type="text/javascript">
+		var _engine = undefined;
+		window.onload = function(){
+		_engine = makeEngine(document.getElementById("example"));
+		_engine.add( makeRoto( 7 ) );
+		_engine.start();
+
+
+	};
+	</script>
+</head>
+<body style="height: 100%;padding:0;margin:0">
+<canvas id="example">
+This text is displayed if your browser does not support HTML5 Canvas.
+</canvas>
+</body>
+</html>
