@@ -17,8 +17,8 @@ function makeTimer()
 			{
 				var load = took/counter;
 				var fps = 1000/load;
-				console.log(fps);
-				document.getElementById("fps").innerText = "Load: "+Math.round(load) + "\nFPS: "+Math.round(fps);
+			//	console.log(fps);
+			//	document.getElementById("fps").innerText = "Load: "+Math.round(load) + "\nFPS: "+Math.round(fps);
 				counter =0;
 
 				mark=new Date().getTime();

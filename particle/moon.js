@@ -1,3 +1,10 @@
+var makeScaler = function()
+{
+	return {
+		dist: function( x ){ return x; },
+		time: function( t ) { return t/10000; }
+	};
+};
 var vec = function vec( par )
 {
 	if( par === undefined )
@@ -6,11 +13,25 @@ var vec = function vec( par )
 	var _x = par.x || 0;
 	var _y = par.y || 0;
 	var _z = par.z || 0;
+	var num = function( i ) {
+		var tmp = i*100;
+		return Math.floor( tmp ) / 100;
+	};
+
+	var abs = undefined;
 
 	return {
 		x: function(){return _x;},
 		y: function(){return _y;},
 		z: function(){return _z;},
+		abs: function()
+		{
+			if( abs === undefined )
+			{
+				abs = Math.sqrt( _x*_x + _y*_y + _z*_z );
+			}
+			return abs;
+		},
 		dot: function( v ) { return _x* v.x() + _y* v.y() + _z* v.z(); },
 		cross: function( v ) { return vec({
 			x:_y* v.z()-_z* v.y(),
@@ -25,39 +46,7 @@ var vec = function vec( par )
 			return vec({x:v.x()+_x,y:v.y()+_y,z:v.z()+_z});
 		},
 		sub: function( v ) {return vec({x:v.x()-_x,y:v.y()-_y,z:v.z()-_z}); },
-		projectOnPlane: function(plane)
-		{
-			var c1 =
-				(plane.u1().x() * _x) +
-					(plane.u1().y() * _y) +
-					(plane.u1().z() * _z);
-			var c2 =
-				(plane.u2().x() * _x) +
-					(plane.u2().y() * _y) +
-					(plane.u2().z() * _z);
-
-			var p1 = plane.u1().mul(c1);
-			var p2 = plane.u2().mul(c2);
-
-			return p1.add( p2 );
-		}
-
-	};
-};
-
-var plane = function( par )
-{
-	if( par === undefined )
-		par = {};
-	var vec1 = par.u || vec();
-	var vec2 = par.v || vec();
-	var position = par.p || vec();
-
-	var u1 = vec( {x:vec1.x(),y:vec1.y(),z:vec1.z()} );
-	var u2 = vec( {x:vec2.x(),y:vec2.y(),z:vec2.z()} );
-	return{
-		u1: function() {return u1;},
-		u2: function() {return u2;}
+		info: function() { return "[ "+num(_x)+", "+num(_y)+", "+num(_z)+" ]";}
 	};
 };
 
@@ -68,23 +57,46 @@ var makeMoon = function()
 	return {
 		r: function() {return radius;},
 		tick: function(){},
-		pos: function() {return position;}
+		pos: function() {return position;},
+		style: function(){return "white";}
 	};
 };
 
-var makeView = function()
+var makeView = function(start)
 {
-	var u = vec({x:1,y:0,z:0});
-	var v = vec({x:0,y:1,z:0});
+	var pos = start;
+	var u = vec({x:0,y:1,z:0});
+	var v = vec({x:1,y:0,z:0});
 	var n = u.cross( v );
+
+	var fov = 200;
 
 	return {
 		tick: function(){ /* move viewport */ },
 		u: function() { return u; },
 		v: function() { return v; },
 		n: function() { return n; },
-		fov: 100,
-		pos: function() { return vec(); }
+		pos: function() { return pos; },
+		draw: function( context, obj )
+		{
+			var p = obj.pos().sub( this.pos() );
+			var ndist = p.dot( this.n() );
+			if( ndist > 0 )
+			{
+				var x = p.dot( this.u());
+				var y = p.dot( this.v());
+				var cx = (x*ndist) / (ndist+fov);
+				var cy = (y*ndist) / (ndist+fov);
+
+				if( cx < fov && cy < fov && cx >= 0 && cy >= 0 )
+				{
+					context.fillStyle = obj.style();
+					context.beginPath();
+					context.arc( x,y,obj.r(),0, Math.PI*2, true);
+					context.fill();
+				}
+			}
+		}
 	};
 };
 
@@ -95,52 +107,54 @@ var makeParticle = function()
 	return {
 		pos: function() { return position; },
 		tick: function(dt) {
-			position = position.add( velocity.mul(dt) );
+//			position = position.add( velocity.mul(dt) );
+			position = vec( {
+				x: Math.sin(dt*2*Math.PI)*30,
+				y:Math.sin(dt*2*Math.PI)*40,
+				z:Math.cos(dt*2*Math.PI)*60});
 		},
-		r: function(){ return 5;}
+		r: function(){ return 5;},
+		style: function(){return "#77F"}
 	};
 };
 
 var makeMoonSim = function()
 {
+	var scaler = makeScaler();
+	var viewport = makeView(vec({x:200,y:200,z:-80}));
+	var part = makeParticle();
 	var moon = makeMoon();
-	var viewport = makeView();
-	var particle = makeParticle();
+	var drawables = [part,moon];
 	var lastmark = -1;
+	var sortFunction = function(a,b){
+		var v1 = b.pos().sub( viewport.pos() ).abs();
+		var v2 = a.pos().sub( viewport.pos() ).abs();
+		return v1 - v2;
+	};
 
 	return function( context, width, height, mark ) {
 
 		if( lastmark < 0 )
 			lastmark =mark;
-		moon.tick();
 		viewport.tick();
-		particle.tick( (mark-lastmark)/1000 ); //scale
-
-		var p = particle.pos().sub( viewport.pos() );
-		var ndist = p.dot( viewport.n() );
-		if( ndist > 0 )
+		for( var d in drawables )
 		{
-			var x = p.dot( viewport.u());
-			var y = p.dot( viewport.v());
-			var cx = (x*ndist) / (ndist+viewport.fov);
-			var cy = (y*ndist) / (ndist+viewport.fov);
-
-			if( cx < viewport.fov && cy < viewport.fov && cx >= 0 && cy >= 0 )
-			{
-				context.fillStyle = "white";
-				context.beginPath();
-				context.arc( x,y,10,0, Math.PI*2, true);
-				context.fill();
-			}
+			drawables[d].tick( scaler.time(mark) );
 		}
+		drawables.sort( sortFunction );
+
+		for( var d in drawables )
+		{
+			viewport.draw( context, drawables[d] );
+		}
+		document.getElementById("fps").innerText =
+			"vp: "+viewport.pos().info() + " n:"+viewport.n().info()+
+			"\nm: "+moon.pos().info() +
+			"\np: "+part.pos().info();
+
 		lastmark = mark;
 	};
 };
-var makeInterstellar = function( )
-{
-	var x, y, z;
-	var radii;
-}
 
 var makeColorer = function( visible, gone )
 {
