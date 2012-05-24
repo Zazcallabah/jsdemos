@@ -1,6 +1,3 @@
-var _MOVE_PART = function()
-{
-}
 /*
 %Projekt: 	A3. Det Geomagnetiska Fältets Påverkan på Månens Strålningsmiljö
 

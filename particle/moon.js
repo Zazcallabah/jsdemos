@@ -1,58 +1,38 @@
+var makeRotational = function( theta, type )
+{
+	var cos = Math.cos(theta);
+	var sin = Math.sin(theta);
+	if( type === "z" )
+	{
+		return [
+			vec({x:cos,y:sin,z:0}),
+			vec({x:-1*sin,y:cos,z:0}),
+			vec({x:0,y:0,z:1})];
+	}
+	else if( type === "y" )
+	{
+		return [
+			vec({x:cos,y:0,z:-1*sin}),
+			vec({x:0,y:1,z:0}),
+			vec({x:sin,y:0,z:cos})];
+	}
+	else
+	return [
+		vec({x:1,y:0,z:0}),
+		vec({x:0,y:cos,z:sin}),
+		vec({x:0,y:-1*sin,z:cos})];
+};
 var makeScaler = function()
 {
 	return {
-		dist: function( x ){ return x; },
+		dist: function( x ){ return x/1e5; },
 		time: function( t ) { return t/10000; }
-	};
-};
-var vec = function vec( par )
-{
-	if( par === undefined )
-		par = {};
-
-	var _x = par.x || 0;
-	var _y = par.y || 0;
-	var _z = par.z || 0;
-	var num = function( i ) {
-		var tmp = i*100;
-		return Math.floor( tmp ) / 100;
-	};
-
-	var abs = undefined;
-
-	return {
-		x: function(){return _x;},
-		y: function(){return _y;},
-		z: function(){return _z;},
-		abs: function()
-		{
-			if( abs === undefined )
-			{
-				abs = Math.sqrt( _x*_x + _y*_y + _z*_z );
-			}
-			return abs;
-		},
-		dot: function( v ) { return _x* v.x() + _y* v.y() + _z* v.z(); },
-		cross: function( v ) { return vec({
-			x:_y* v.z()-_z* v.y(),
-			y:_z* v.x()-_x* v.z(),
-			z:_x* v.y()-_y* v.x()
-		});
-			},
-		mul: function( scal ) {
-			return vec( {x:scal*_x,y:scal*_y,z:scal*_z} );
-		},
-		add: function( v ) {
-			return vec({x:v.x()+_x,y:v.y()+_y,z:v.z()+_z});
-		},
-		sub: function( v ) {return vec({x:v.x()-_x,y:v.y()-_y,z:v.z()-_z}); },
-		info: function() { return "[ "+num(_x)+", "+num(_y)+", "+num(_z)+" ]";}
 	};
 };
 
 var makeMoon = function()
 {
-	var radius = 10;
+	var radius = 1.7371e6;
 	var position = vec();
 	return {
 		r: function() {return radius;},
@@ -65,34 +45,95 @@ var makeMoon = function()
 var makeView = function(start)
 {
 	var pos = start;
-	var u = vec({x:0,y:1,z:0});
-	var v = vec({x:1,y:0,z:0});
+	var u = vec({x:1,y:0,z:0}).unit();
+	var v = vec({x:0,y:1,z:0}).unit();
 	var n = u.cross( v );
 
-	var fov = 200;
+	var fov = 400;
 
+	var rotate = function( rot ) {
+		var r1 = u.dot( rot[0] );
+		var r2 = u.dot( rot[1] );
+		var r3 = u.dot( rot[2] );
+		u = vec({x:r1,y:r2,z:r3});
+
+		r1 = v.dot( rot[0] );
+		r2 = v.dot( rot[1] );
+		r3 = v.dot( rot[2] );
+		v = vec({x:r1,y:r2,z:r3});
+		n= u.cross( v );
+	};
+
+	var moves = [
+		{v:vec({x:0,y:0,z:5e5}),a:87,s:83}, // w s
+		{v:vec({x:5e5,y:0,z:0}),a:68,s:65}, // d a
+		{v:vec({x:0,y:5e5,z:0}),a:81,s:69}  // q e
+	];
+
+	var rots = [
+		{t:"x",a:73,s:75}, // i k
+		{t:"y",a:74,s:76}, // j l
+		{t:"z",a:79,s:85}  // o u
+	];
+var count = 0;
 	return {
-		tick: function(){ /* move viewport */ },
+		rotate: rotate,
+		tick: function(keys)
+		{
+			var angle = 0.001*2*Math.PI;
+			for( var k = 0; k < keys.length; k++ )
+			{
+				for( var m = 0; m< moves.length; m++ )
+				{
+					if( moves[m].a === keys[k] )
+					{
+						pos = pos.add( moves[m].v );
+						return;
+					}
+					if( moves[m].s === keys[k] )
+					{
+						pos = pos.sub( moves[m].v);
+						return;
+					}
+				}
+				for( var r = 0; r < rots.length; r++ )
+				{
+					if( rots[r].a === keys[k] )
+					{
+						rotate(makeRotational( angle, rots[r].t ) );
+						return;
+					}
+					if( rots[r].s === keys[k] )
+					{
+						rotate( makeRotational( -1*angle, rots[r].t ));
+						return;
+					}
+				}
+			}
+		},
 		u: function() { return u; },
 		v: function() { return v; },
 		n: function() { return n; },
 		pos: function() { return pos; },
-		draw: function( context, obj )
+		draw: function( context, w,h,obj )
 		{
+			count++;
 			var p = obj.pos().sub( this.pos() );
 			var ndist = p.dot( this.n() );
-			if( ndist > 0 )
+			if( ndist > -1*fov )
 			{
 				var x = p.dot( this.u());
 				var y = p.dot( this.v());
-				var cx = (x*ndist) / (ndist+fov);
-				var cy = (y*ndist) / (ndist+fov);
+		//		if( count % 100 === 0 )
+		//			console.log(ndist+"|"+x+"|"+y);
+				var cx = (x*fov) / (ndist+fov) + w/2;
+				var cy = (y*fov) / (ndist+fov) + h/2;
 
-				if( cx < fov && cy < fov && cx >= 0 && cy >= 0 )
+				if( cx < w && cy < h && cx >= 0 && cy >= 0 )
 				{
 					context.fillStyle = obj.style();
 					context.beginPath();
-					context.arc( x,y,obj.r(),0, Math.PI*2, true);
+					context.arc( cx,cy,obj.r()*fov/(ndist+fov),0, Math.PI*2, true);
 					context.fill();
 				}
 			}
@@ -100,20 +141,66 @@ var makeView = function(start)
 	};
 };
 
-var makeParticle = function()
+var makeParticle = function( energy, position, velocity )
 {
-	var position = vec({x:-50,y:-30,z: 0});
-	var velocity = vec({x:1,y:1,z:-1});
+	var scaler = makeScaler();
+	var eV = 1.60218e-19; //          %En elektronvolt [J]
+	var MJ = 3844e5;     //          %Avstånd mellan månen och jorden [m]
+	var RE = 6.378e6;        //      %Jordradien [m]
+	var MR = 1.7371e6;        //     %Månradien [m]
+	var c = 3e008;               //    %Ljusets hastighet [m/s]
+	var c2 = c*c;
+	var q = 1.602e-19;            //   %Elementarladdning för proton [C]
+	var m = 1.6726e-27;           //   %Protons massa [kg]
+
+//	dt = 1e-003;         //        %Tidssteg [s]
+	var E = energy || 3e5*1e6*eV;  //        %Energi [J]
+
+	var iopt = 3;       //             %Värde beroende av aktivitet där ca 3 är medel
+	var ps = 0;         //             %Ingen lutning av dipol
+	var parmod = []; // 10
+	var emc = (E/(m*c2)+1)
+	var absv = c*Math.sqrt( 1 - 1/(emc*emc)); //     %Hastighetens belopp [m/s]
+	var g = 1/Math.sqrt(1-(absv*absv)/c2); //               %Gamma
+
+	//M is end posit
+	var theta = 0; // radians
+	var r = position;//vec({x:-MJ+(MJ+10*RE)*Math.cos(theta),y:(MJ+10*RE)*Math.sin(theta),z: 0}); //  %Postition [m]
+	var v = vec({
+		x: absv*(Math.random()-0.5),
+		y:absv*(Math.random()-0.5),
+		z: absv*(Math.random()-0.5)
+	});//    %Hastighet [m/s]
+	var p = v.mul(m*g); //               %Rörelsemängd [kg*m/s]
+
+	var ef_pos = position;
+
 	return {
-		pos: function() { return position; },
+		pos: function() { return ef_pos; },
 		tick: function(dt) {
-//			position = position.add( velocity.mul(dt) );
-			position = vec( {
-				x: Math.sin(dt*2*Math.PI)*30,
-				y:Math.sin(dt*2*Math.PI)*40,
-				z:Math.cos(dt*2*Math.PI)*60});
+
+			var B_field = vec({x:0.3,y:0.1,z:0.5});
+			/*			if ( r[0] >= 5*RE )
+			 {
+			 B_field = vec();
+			 }
+			 else
+			 {
+			 //[bx,by,bz] = T89C(iopt,parmod,ps,r(1)/RE,0,r(3)/RE);
+			 //B_field = [bx,by,bz]*1e-009;
+			 }*/
+			var A = v.mul(q);
+			var F = A.cross(B_field);
+
+			p = p.add( F.mul(dt) );          //            %Rörelsemängd [kg*m/s]
+			var pabs = p.abs(); // %Absolutbeloppet av rörelsemängd [kg*m/s]
+			v = p.mul(1/Math.sqrt(m*m+(pabs*pabs)/c2));  //  %Hastigheten [m/s]
+			r = r.add(v.mul(dt) );               //       %Punkt: r=r+dr [m]
+
+
+			ef_pos = vec({x:r.x(),y:r.y(),z:r.z()});
 		},
-		r: function(){ return 5;},
+		r: function(){ return 7e5;},
 		style: function(){return "#77F"}
 	};
 };
@@ -121,10 +208,15 @@ var makeParticle = function()
 var makeMoonSim = function()
 {
 	var scaler = makeScaler();
-	var viewport = makeView(vec({x:200,y:200,z:-80}));
-	var part = makeParticle();
+	var viewport = makeView(vec({x:50,y:-50,z:-80e6}));
+	var drawables = [];
+
+	for( var i = -100e6; i< 100e6; i+=34e6 )
+		for( var j = -100e6; j< 101e6; j+=35e6 )
+			for( var k = -100e6; k< 101e6; k+=36e6 )
+				drawables.push(makeParticle(undefined,vec({x:i,y:j,z:k})));
 	var moon = makeMoon();
-	var drawables = [part,moon];
+	drawables.push(moon);
 	var lastmark = -1;
 	var sortFunction = function(a,b){
 		var v1 = b.pos().sub( viewport.pos() ).abs();
@@ -132,25 +224,25 @@ var makeMoonSim = function()
 		return v1 - v2;
 	};
 
-	return function( context, width, height, mark ) {
+	return function( context, width, height, mark, keys ) {
 
 		if( lastmark < 0 )
 			lastmark =mark;
-		viewport.tick();
+		viewport.tick( keys );
 		for( var d in drawables )
 		{
-			drawables[d].tick( scaler.time(mark) );
+			drawables[d].tick( scaler.time(mark - lastmark) );
 		}
 		drawables.sort( sortFunction );
 
 		for( var d in drawables )
 		{
-			viewport.draw( context, drawables[d] );
+			viewport.draw( context, width,height, drawables[d] );
 		}
-		document.getElementById("fps").innerText =
-			"vp: "+viewport.pos().info() + " n:"+viewport.n().info()+
-			"\nm: "+moon.pos().info() +
-			"\np: "+part.pos().info();
+		//document.getElementById("fps").innerText =
+		//	"vp: "+viewport.pos().info() + " n:"+viewport.n().info();//+
+//			"\nm: "+moon.pos().info() +
+//			"\np: "+part.pos().info();
 
 		lastmark = mark;
 	};

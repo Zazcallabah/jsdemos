@@ -30,6 +30,7 @@ function makeTimer()
 function makeEngine( canvas, timer )
 {
 	var workers = [];
+	var pressedkeys = [];
 	var triggerWork = function(context, width, height, mark )
 	{
 		if(timer!== undefined)
@@ -37,9 +38,25 @@ function makeEngine( canvas, timer )
 
 		for (var worker in workers)
 		{
-			workers[worker](context, width, height, mark);
+			workers[worker](context, width, height, mark, pressedkeys);
 		}
 	};
+
+
+	document.onkeyup = function(){ pressedkeys = []; }
+
+	document.onkeydown = function(event) {
+		var keyCode;
+		if(event == null)
+		{
+			keyCode = window.event.keyCode;
+		}
+		else
+		{
+			keyCode = event.keyCode;
+		}
+		pressedkeys.push( keyCode );
+	}
 
 	var animate = function()
 	{
