@@ -74,6 +74,7 @@ var makeT89C = function(){
 	var t89_t89 = function t89_t89(id,a,xi){
 
 
+
 		var DER = [[],[],[],[]]; // 3,30
 		var A02 = 25;
 		var XLW2 = 170;
@@ -360,6 +361,9 @@ var ADSL=0;
 	var iop, id, a=[];
 //                   3      []   0
 	return function( iopt,parmod,ps,x,y,z ){
+
+		if(Math.abs(x) > 70 || Math.abs(y) > 70 || Math.abs(z) > 70 )
+		return{bx:0,by:0,bz:0}
 		if(iop === undefined )
 			iop = 10;
 

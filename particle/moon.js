@@ -22,10 +22,20 @@ var makeRotational = function( theta, type )
 		vec({x:0,y:cos,z:sin}),
 		vec({x:0,y:-1*sin,z:cos})];
 };
-
+var makeSun = function()
+{
+	var position = vec({x:1.496e11,y:0,z:0});
+	var radius = 7e8;
+	return {
+		r: function() {return radius;},
+		tick: function(){},
+		pos: function() {return position;},
+		style: function(){return "yellow";}
+	};
+};
 var makeMoon = function()
 {
-	var position = vec({x:3.62570e8,y:0,z:0});
+	var position = vec({x:-3.62570e8,y:0,z:0});
 	var radius = 1.7371e6;
 	return {
 		r: function() {return radius;},
@@ -45,11 +55,11 @@ var makeEarth = function()
 		style: function(){return "blue";}
 	};
 };
-var makeView = function(start)
+var makeView = function(start, xdir, ydir )
 {
-	var pos = start;
-	var u = vec({x:1,y:0,z:0}).unit();
-	var v = vec({x:0,y:1,z:0}).unit();
+	var pos = start || vec();
+	var u = xdir || vec({x:1,y:0,z:0}).unit();
+	var v = ydir || vec({x:0,y:1,z:0}).unit();
 	var n = u.cross( v );
 
 	var fov = 400;
@@ -142,14 +152,15 @@ var count = 0;
 		}
 	};
 };
+var _t89c = makeT89C();
+var _RE = 6.378e6;
 
 // energy decides particle speed, velocity is only the unit vector for the velocity direction
 var makeParticle = function( energy, position, velocity, halt )
 {
-	var t89c = makeT89C();
 	var eV = 1.60218e-19;
-	var RE = 6.378e6;
 	var c = 3e008;
+	var RE = _RE;
 	var c2 = c*c;
 	var q = 1.602e-19;
 	var m = 1.6726e-27;
@@ -157,7 +168,7 @@ var makeParticle = function( energy, position, velocity, halt )
 	var radius = 7e5;
 
 
-	var E = energy || 3e5*1e6*eV;
+	var E = (energy  || 1e6)*eV;
 
 	var iopt = 3;
 	var ps = 0;
@@ -195,7 +206,7 @@ var makeParticle = function( energy, position, velocity, halt )
 				}
 			}
 
-			var t_b = t89c( iopt,parmod,ps, r.x()/RE, r.y()/RE, r.z()/RE );
+			var t_b = _t89c( iopt,parmod,ps, r.x()/RE, r.y()/RE, r.z()/RE );
 			if( t_b.bx === NaN )
 				t_b.bx = 0;
 			if( t_b.by === NaN )
@@ -225,7 +236,8 @@ var makeMoonSim = function()
 	var drawables = [];
 	var moon = makeMoon();
 	var earth = makeEarth();
-	var viewport = makeView(moon.pos().add(vec({x:0,y:0,z:-10e6})));
+	var sun  = makeSun();
+	var viewport = makeView(moon.pos().add(vec({x:0,y:0,z:-1*_RE*30})));
 
 	for( var i = -100e6; i< 100e6; i+=34e6 )
 		for( var j = -100e6; j< 101e6; j+=35e6 )
@@ -242,12 +254,11 @@ var makeMoonSim = function()
 						return true;
 					}
 					return p.sub(earth.pos()).abs() < earth.r();
-
-
 				}));
 			}
 	drawables.push(moon);
 	drawables.push(earth);
+	drawables.push(sun);
 	var lastmark = -1;
 	var sortFunction = function(a,b){
 		var v1 = b.pos().sub( viewport.pos() ).abs();
