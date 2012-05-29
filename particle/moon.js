@@ -1,93 +1,106 @@
-var makeRotational = function( theta, type )
+var _rotate = function( ve, theta, around )
 {
 	var cos = Math.cos(theta);
 	var sin = Math.sin(theta);
-	if( type === "z" )
-	{
-		return [
-			vec({x:cos,y:sin,z:0}),
-			vec({x:-1*sin,y:cos,z:0}),
-			vec({x:0,y:0,z:1})];
-	}
-	else if( type === "y" )
-	{
-		return [
-			vec({x:cos,y:0,z:-1*sin}),
-			vec({x:0,y:1,z:0}),
-			vec({x:sin,y:0,z:cos})];
-	}
-	else
-	return [
-		vec({x:1,y:0,z:0}),
-		vec({x:0,y:cos,z:sin}),
-		vec({x:0,y:-1*sin,z:cos})];
+	var u = around.x();
+	var v = around.y();
+	var w = around.z();
+	var x = ve.x();
+	var y = ve.y();
+	var z = ve.z();
+	var rx = u*(u*x+v*y+w*z)*(1-cos)+x*cos+(-1*w*y+v*z)*sin;
+	var ry = v*(u*x+v*y+w*z)*(1-cos)+y*cos+(w*x-u*z)*sin;
+	var rz = w*(u*x+v*y+w*z)*(1-cos)+z*cos+(-1*v*x+u*y)*sin;
+	return vec({x:rx,y:ry,z:rz});
 };
+
+var makeInterstellar = function( radius, position, color )
+{
+	var _radius = radius;
+	var _pos = position;
+	var _color = color;
+	return {
+		r: function() {return _radius;},
+		tick: function(){},
+		pos: function() {return _pos;},
+		style: function(){return _color;}
+	};
+}
 var makeSun = function()
 {
-	var position = vec({x:1.496e11,y:0,z:0});
-	var radius = 7e8;
-	return {
-		r: function() {return radius;},
-		tick: function(){},
-		pos: function() {return position;},
-		style: function(){return "yellow";}
-	};
+	return makeInterstellar( 7e8, vec({x:1.496e11,y:0,z:0}), "yellow" );
 };
+
 var makeMoon = function()
 {
-	var position = vec({x:-3.62570e8,y:0,z:0});
-	var radius = 1.7371e6;
-	return {
-		r: function() {return radius;},
-		tick: function(){},
-		pos: function() {return position;},
-		style: function(){return "white";}
-	};
+	return makeInterstellar( 1.74e6, vec({x:-3.62570e8,y:0,z:0}), "white" );
 };
+
 var makeEarth = function()
 {
-	var position = vec();
-	var radius = 6.371e6;
-	return {
-		r: function() {return radius;},
-		tick: function(){},
-		pos: function() {return position;},
-		style: function(){return "blue";}
-	};
+	return makeInterstellar( 6.4e6, vec(), "blue" );
 };
+
 var makeView = function(start, xdir, ydir )
 {
 	var pos = start || vec();
+
+	var storedData = localStorage.getItem( "viewport_position" );
+	if( storedData !== null && storedData !== undefined )
+	{
+		var parsed = JSON.parse(storedData);
+		pos = vec(parsed);
+	}
 	var u = xdir || vec({x:1,y:0,z:0}).unit();
+	storedData = localStorage.getItem( "viewport_u" );
+	if( storedData !== null && storedData !== undefined )
+	{
+		parsed = JSON.parse(storedData);
+		u = vec(parsed);
+	}
 	var v = ydir || vec({x:0,y:1,z:0}).unit();
+	storedData = localStorage.getItem( "viewport_v" );
+	if( storedData !== null && storedData !== undefined )
+	{
+		 parsed = JSON.parse(storedData);
+		v = vec(parsed);
+	}
 	var n = u.cross( v );
 
-	var fov = 400;
+	var fov = 200;
+	var hasmoved = false;
 
-	var rotate = function( rot ) {
-		var r1 = u.dot( rot[0] );
-		var r2 = u.dot( rot[1] );
-		var r3 = u.dot( rot[2] );
-		u = vec({x:r1,y:r2,z:r3});
+	var rotate = function( angle, about ) {
+		var local_u = _rotate(u,angle,about);
+		var local_v = _rotate(v,angle,about);
 
-		r1 = v.dot( rot[0] );
-		r2 = v.dot( rot[1] );
-		r3 = v.dot( rot[2] );
-		v = vec({x:r1,y:r2,z:r3});
-		n= u.cross( v );
+		u = local_u.unit();
+		v = local_v.unit();
+		n = u.cross( v );
 	};
 
 	var movespeed = 1e6;
 	var rots = [
-		{t:"x",a:73,s:75}, // i k
-		{t:"y",a:74,s:76}, // j l
-		{t:"z",a:79,s:85}  // o u
+		{t:function(){return u;},a:73,s:75}, // i k
+		{t:function(){return v;},a:74,s:76}, // j l
+		{t:function(){return n;},a:79,s:85}  // o u
 	];
 var count = 0;
 	return {
 		rotate: rotate,
 		tick: function(keys)
 		{
+			if( count++ % 3000 && hasmoved )
+			{
+				var jsonData = JSON.stringify( {x:this.pos().x(),y:this.pos().y(),z:this.pos().z()} );
+				localStorage.setItem("viewport_position",jsonData);
+				jsonData = JSON.stringify( {x:this.u().x(),y:this.u().y(),z:this.u().z()} );
+				localStorage.setItem("viewport_u",jsonData);
+				jsonData = JSON.stringify( {x:this.v().x(),y:this.v().y(),z:this.v().z()} );
+				localStorage.setItem("viewport_v",jsonData);
+				hasmoved = false;
+			}
+
 			var moves = [
 				{v:n.mul(movespeed),a:87,s:83}, // w s
 				{v:u.mul(movespeed),a:68,s:65}, // d a
@@ -102,11 +115,13 @@ var count = 0;
 					if( moves[m].a === keys[k] )
 					{
 						pos = pos.add( moves[m].v );
+						hasmoved=true;
 						return;
 					}
 					if( moves[m].s === keys[k] )
 					{
 						pos = pos.sub( moves[m].v);
+						hasmoved=true;
 						return;
 					}
 				}
@@ -114,12 +129,14 @@ var count = 0;
 				{
 					if( rots[r].a === keys[k] )
 					{
-						rotate(makeRotational( angle, rots[r].t ) );
+						rotate( angle, rots[r].t() );
+						hasmoved=true;
 						return;
 					}
 					if( rots[r].s === keys[k] )
 					{
-						rotate( makeRotational( -1*angle, rots[r].t ));
+						rotate(  -1*angle, rots[r].t() );
+						hasmoved=true;
 						return;
 					}
 				}
@@ -239,13 +256,13 @@ var makeMoonSim = function()
 	var sun  = makeSun();
 	var viewport = makeView(moon.pos().add(vec({x:0,y:0,z:-1*_RE*30})));
 
-	for( var i = -100e6; i< 100e6; i+=34e6 )
+	for( var i = -300e6; i< 131e6; i+=34e6 )
 		for( var j = -100e6; j< 101e6; j+=35e6 )
 			for( var k = -100e6; k< 101e6; k+=36e6 )
 			{
-				var part_pos = moon.pos().add(vec({x:i,y:j,z:k}));
+				var part_pos = moon.pos().mul(0.5).add(vec({x:i,y:j,z:k}));
 				drawables.push(makeParticle(
-					undefined,
+					1e8,
 					part_pos,
 					moon.pos().sub(part_pos).unit(),
 					function(p){
