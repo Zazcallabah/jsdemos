@@ -3,13 +3,20 @@ var vec = function vec( par )
 	if( par === undefined )
 		par = {};
 
+	var cnf = function(i){
+		i *= 1000;
+		i = Math.round(i);
+		i /= 1000;
+		return i;
+	};
+
 	var _x = par.x || 0;
 	var _y = par.y || 0;
 	var _z = par.z || 0;
 	var num = function( i ) {
-//		var tmp = i*100;
-	//	return Math.floor( tmp ) / 100;
-	return i;
+		if(_RE !== undefined && Math.abs(i) > _RE/100 )
+			return cnf(i/_RE)+ " RE" ;
+		else return cnf(i);
 	};
 
 	var abs = undefined;

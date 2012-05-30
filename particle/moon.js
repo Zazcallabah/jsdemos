@@ -1,19 +1,3 @@
-var _rotate = function( ve, theta, around )
-{
-	var cos = Math.cos(theta);
-	var sin = Math.sin(theta);
-	var u = around.x();
-	var v = around.y();
-	var w = around.z();
-	var x = ve.x();
-	var y = ve.y();
-	var z = ve.z();
-	var rx = u*(u*x+v*y+w*z)*(1-cos)+x*cos+(-1*w*y+v*z)*sin;
-	var ry = v*(u*x+v*y+w*z)*(1-cos)+y*cos+(w*x-u*z)*sin;
-	var rz = w*(u*x+v*y+w*z)*(1-cos)+z*cos+(-1*v*x+u*y)*sin;
-	return vec({x:rx,y:ry,z:rz});
-};
-
 var makeInterstellar = function( radius, position, color )
 {
 	var _radius = radius;
@@ -33,7 +17,7 @@ var makeSun = function()
 
 var makeMoon = function()
 {
-	return makeInterstellar( 1.74e6, vec({x:-3.62570e8,y:0,z:0}), "white" );
+	return makeInterstellar( 1.7371e6, vec({x:-3844e5,y:0,z:0}), "white" );
 };
 
 var makeEarth = function()
@@ -41,155 +25,27 @@ var makeEarth = function()
 	return makeInterstellar( 6.4e6, vec(), "blue" );
 };
 
-var makeView = function(start, xdir, ydir )
-{
-	var pos = start || vec();
-
-	var storedData = localStorage.getItem( "viewport_position" );
-	if( storedData !== null && storedData !== undefined )
-	{
-		var parsed = JSON.parse(storedData);
-		pos = vec(parsed);
-	}
-	var u = xdir || vec({x:1,y:0,z:0}).unit();
-	storedData = localStorage.getItem( "viewport_u" );
-	if( storedData !== null && storedData !== undefined )
-	{
-		parsed = JSON.parse(storedData);
-		u = vec(parsed);
-	}
-	var v = ydir || vec({x:0,y:1,z:0}).unit();
-	storedData = localStorage.getItem( "viewport_v" );
-	if( storedData !== null && storedData !== undefined )
-	{
-		 parsed = JSON.parse(storedData);
-		v = vec(parsed);
-	}
-	var n = u.cross( v );
-
-	var fov = 200;
-	var hasmoved = false;
-
-	var rotate = function( angle, about ) {
-		var local_u = _rotate(u,angle,about);
-		var local_v = _rotate(v,angle,about);
-
-		u = local_u.unit();
-		v = local_v.unit();
-		n = u.cross( v );
-	};
-
-	var movespeed = 1e6;
-	var rots = [
-		{t:function(){return u;},a:73,s:75}, // i k
-		{t:function(){return v;},a:74,s:76}, // j l
-		{t:function(){return n;},a:79,s:85}  // o u
-	];
-var count = 0;
-	return {
-		rotate: rotate,
-		tick: function(keys)
-		{
-			if( count++ % 3000 && hasmoved )
-			{
-				var jsonData = JSON.stringify( {x:this.pos().x(),y:this.pos().y(),z:this.pos().z()} );
-				localStorage.setItem("viewport_position",jsonData);
-				jsonData = JSON.stringify( {x:this.u().x(),y:this.u().y(),z:this.u().z()} );
-				localStorage.setItem("viewport_u",jsonData);
-				jsonData = JSON.stringify( {x:this.v().x(),y:this.v().y(),z:this.v().z()} );
-				localStorage.setItem("viewport_v",jsonData);
-				hasmoved = false;
-			}
-
-			var moves = [
-				{v:n.mul(movespeed),a:87,s:83}, // w s
-				{v:u.mul(movespeed),a:68,s:65}, // d a
-				{v:v.mul(movespeed),a:81,s:69}  // q e
-			];
-
-			var angle = 0.001*2*Math.PI;
-			for( var k = 0; k < keys.length; k++ )
-			{
-				for( var m = 0; m< moves.length; m++ )
-				{
-					if( moves[m].a === keys[k] )
-					{
-						pos = pos.add( moves[m].v );
-						hasmoved=true;
-						return;
-					}
-					if( moves[m].s === keys[k] )
-					{
-						pos = pos.sub( moves[m].v);
-						hasmoved=true;
-						return;
-					}
-				}
-				for( var r = 0; r < rots.length; r++ )
-				{
-					if( rots[r].a === keys[k] )
-					{
-						rotate( angle, rots[r].t() );
-						hasmoved=true;
-						return;
-					}
-					if( rots[r].s === keys[k] )
-					{
-						rotate(  -1*angle, rots[r].t() );
-						hasmoved=true;
-						return;
-					}
-				}
-			}
-		},
-		u: function() { return u; },
-		v: function() { return v; },
-		n: function() { return n; },
-		pos: function() { return pos; },
-		draw: function( context, w,h,obj )
-		{
-			count++;
-			var p = obj.pos().sub( this.pos() );
-			var ndist = p.dot( this.n() );
-			if( ndist > -1*fov )
-			{
-				var x = p.dot( this.u());
-				var y = p.dot( this.v());
-				var cx = (x*fov) / (ndist+fov) + w/2;
-				var cy = (y*fov) / (ndist+fov) + h/2;
-
-				if( cx < w && cy < h && cx >= 0 && cy >= 0 )
-				{
-					context.fillStyle = obj.style();
-					context.beginPath();
-					context.arc( cx,cy,obj.r()*fov/(ndist+fov),0, Math.PI*2, true);
-					context.fill();
-				}
-			}
-		}
-	};
-};
 var _t89c = makeT89C();
 var _RE = 6.378e6;
 
 // energy decides particle speed, velocity is only the unit vector for the velocity direction
 var makeParticle = function( energy, position, velocity, halt )
 {
+	// this whole function is a javascript port of the brilliant work of Emelie Holm. Without her thesis, this simulation would be very boring indeed.
 	var eV = 1.60218e-19;
-	var c = 3e008;
+	var c = 3e8;
 	var RE = _RE;
 	var c2 = c*c;
 	var q = 1.602e-19;
 	var m = 1.6726e-27;
 	var style = "#77F";
-	var radius = 7e5;
+	var radius = 6e5;
 
 
 	var E = (energy  || 1e6)*eV;
 
 	var iopt = 3;
 	var ps = 0;
-	var parmod = []; // 10
 	var emc = (E/(m*c2)+1);
 	var absv = c*Math.sqrt( 1 - 1/(emc*emc));
 	var g = 1/Math.sqrt(1-(absv*absv)/c2);
@@ -223,7 +79,7 @@ var makeParticle = function( energy, position, velocity, halt )
 				}
 			}
 
-			var t_b = _t89c( iopt,parmod,ps, r.x()/RE, r.y()/RE, r.z()/RE );
+			var t_b = _t89c( iopt,[],ps, r.x()/RE, r.y()/RE, r.z()/RE );
 			if( t_b.bx === NaN )
 				t_b.bx = 0;
 			if( t_b.by === NaN )
@@ -248,20 +104,70 @@ var makeParticle = function( energy, position, velocity, halt )
 	};
 };
 
-var makeMoonSim = function()
+var setVpMovementActions = function( view )
 {
-	var drawables = [];
-	var moon = makeMoon();
-	var earth = makeEarth();
-	var sun  = makeSun();
-	var viewport = makeView(moon.pos().add(vec({x:0,y:0,z:-1*_RE*30})));
+	var movevp = function( vp, direction, multiplier ) {
+		vp.moveTo( vp.pos().add( direction.mul( multiplier ) ) )
+	};
+	var addMoveActions = function( a, s, selector )
+	{
+		view.addAction( a, function(vp,c){ movevp( vp, selector(vp), 1e6*(c===undefined?1:10) ) } );
+		view.addAction( s, function(vp,c){ movevp( vp, selector(vp), -1e6*(c===undefined?1:10) ) } );
+	};
+	addMoveActions( 87, 83, function(vp){ return vp.n() } ); // w s
+	addMoveActions( 68, 65, function(vp){ return vp.u() } ); // d a
+	addMoveActions( 81, 69, function(vp){ return vp.v() } ); // q e
+	view.addAction( 88, //x
+	function(vp){ vp.reset() } );
+	var rotatevp = function( vp, angle, about )
+	{
+		vp.rotate( angle, about );
+	};
+	var addRotActions = function( a, s, selector)
+	{
+		var rotatespeed = 0.005*2*Math.PI;
+		view.addAction( a, function(vp){rotatevp( vp, rotatespeed, selector(vp) ) } );
+		view.addAction( s, function(vp){rotatevp( vp, -1*rotatespeed, selector(vp) ) } );
+	};
 
+	addRotActions( 73,75,function(vp){return vp.u() }); //ik
+	addRotActions( 74,76,function(vp){return vp.v() }); //jl
+	addRotActions( 79,85,function(vp){return vp.n() }); //ou
+};
+
+var setParticleControlActions = function( view, drawlist )
+{
+	var frameTimeStamp = new Date().getTime();
+	// stuff already in drawlist are always supposed to be there
+	var defaultobjects = [];
+	for( var d in drawlist )
+	{
+		defaultobjects.push( drawlist[d] );
+	}
+	var moon = defaultobjects[0];
+	var earth = defaultobjects[1];	
+	// clear all particles.
+	view.addAction( 67, // c
+	function() {
+		drawlist.length = 0;
+		for( d in defaultobjects )
+			drawlist.push( defaultobjects[d]);
+	}); 
+	
+	// boxed-in moon
+	view.addAction( 86, // v
+	function(){
+
+		var current = new Date().getTime();
+		if( current - frameTimeStamp < 1000 )
+			return;
+		frameTimeStamp = new Date().getTime();
 	for( var i = -300e6; i< 131e6; i+=34e6 )
 		for( var j = -100e6; j< 101e6; j+=35e6 )
 			for( var k = -100e6; k< 101e6; k+=36e6 )
 			{
 				var part_pos = moon.pos().mul(0.5).add(vec({x:i,y:j,z:k}));
-				drawables.push(makeParticle(
+				drawlist.push( makeParticle(
 					1e8,
 					part_pos,
 					moon.pos().sub(part_pos).unit(),
@@ -273,10 +179,126 @@ var makeMoonSim = function()
 					return p.sub(earth.pos()).abs() < earth.r();
 				}));
 			}
+	});
+	
+	var energies = [1e6,1e7,1e8,1e9,1e4*1e6,1e5*1e6,1e6*1e6];
+	var MJ = 3844e5;
+	var energycounter = 0;
+	var selectenergy = function()
+	{
+		return energies[energycounter++ % energies.length];
+	};
+	view.addAction( 78, // n
+		function(){
+
+			var current = new Date().getTime();
+			if( current - frameTimeStamp < 1000 )
+				return;
+			frameTimeStamp = new Date().getTime();
+
+			var energy = selectenergy();
+			for( var j = 1; j<37;j++)
+			{
+				var theta = j*10*Math.PI/180;
+				var r = vec({x:(-MJ+(MJ+10*_RE)*Math.cos(theta)),
+					y:(MJ+10*_RE)*Math.sin(theta),z: 0});
+				var v = vec({x: -Math.cos(theta),y: -Math.sin(theta),z: 0}).unit();
+				drawlist.push( makeParticle( energy, r, v,
+					function(p){
+					if(p.sub(moon.pos()).abs() < moon.r() )
+					{
+						return true;
+					}
+					return p.sub(earth.pos()).abs() < earth.r();
+					}));
+
+				}
+		});
+	// circle around moon
+	view.addAction( 66, // b
+	function(){
+
+		var current = new Date().getTime();
+		if( current - frameTimeStamp < 1000 )
+			return;
+		frameTimeStamp = new Date().getTime();
+
+		var energy = selectenergy();
+		for( var i = 0; i<50;i++)
+		{
+			var theta = i * (2/50)*Math.PI;
+			var directionv = vec({x:Math.sin(theta),y:Math.cos(theta),z:0});
+			var part_pos = moon.pos().add( directionv.mul(MJ) );
+			drawlist.push( makeParticle(
+				energy,
+				part_pos,
+				moon.pos().sub(part_pos).unit(),
+				function(p){
+					if(p.sub(moon.pos()).abs() < moon.r() )
+					{
+						return true;
+					}
+					return p.sub(earth.pos()).abs() < earth.r();
+				}));
+		}
+
+		 });
+	
+};
+
+var makeMoonSim = function()
+{
+	var drawables = [];
+	var moon = makeMoon();
+	var earth = makeEarth();
+	var sun  = makeSun();
+	var vp_start = moon.pos().add(vec({x:0,y:0,z:-1*_RE*30}));
+	var xdir = undefined;
+	var ydir = undefined;
+	
+	var setifdef = function( data, setter )
+	{
+		if( data !== null && data !== undefined )
+		{
+			var parsed = JSON.parse(data);
+			setter(vec(parsed));
+		}
+	};
+	
+	if( typeof(localStorage) !== undefined )
+	{
+		setifdef( localStorage.getItem( "viewport_position" ), function(d){ vp_start = d; } );
+		setifdef( localStorage.getItem( "viewport_u" ), function(d){ xdir = d; } );
+		setifdef( localStorage.getItem( "viewport_v" ), function(d){ ydir = d; } );
+	}
+	
+	var setStorageVec = function( label, v )
+	{
+		var jsonData = JSON.stringify( {x:v.x(),y:v.y(),z:v.z()} );
+		localStorage.setItem(label,jsonData);
+	};
+	
+	var touch_storage = function( vp )
+	{
+		if( typeof(localStorage) !== undefined )
+		{
+			setStorageVec( "viewport_position", vp.pos() );
+			setStorageVec( "viewport_u", vp.u() );
+			setStorageVec( "viewport_v", vp.v() );
+		}
+	};
+	
+	var viewport = makeView(vp_start,xdir,ydir,touch_storage);
+	setVpMovementActions( viewport );
+
 	drawables.push(moon);
 	drawables.push(earth);
 	drawables.push(sun);
+	
+	setParticleControlActions( viewport, drawables );
+	
 	var lastmark = -1;
+	
 	var sortFunction = function(a,b){
 		var v1 = b.pos().sub( viewport.pos() ).abs();
 		var v2 = a.pos().sub( viewport.pos() ).abs();
@@ -284,20 +306,21 @@ var makeMoonSim = function()
 	};
 
 	return function( context, width, height, mark, keys ) {
-
 		if( lastmark < 0 )
 			lastmark =mark;
 		viewport.tick( keys );
 		for( var d in drawables )
 		{
-			drawables[d].tick( (mark - lastmark)/10000 );
+			drawables[d].tick( (mark - lastmark)/10000 ); // magic number here, since mark is measured in seconds*10^-5
 		}
-		drawables.sort( sortFunction );
+		
+		drawables.sort( sortFunction ); // if we dont sort, stuff farther away may be drawn on top of closer stuff, it's a makeshift z-buffer
 
 		for( var d2 in drawables )
 		{
 			viewport.draw( context, width,height, drawables[d2] );
 		}
+		viewport.drawguides( context, width, height );
 		lastmark = mark;
 	};
 };

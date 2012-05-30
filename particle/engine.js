@@ -1,46 +1,38 @@
-function makeTimer()
+function makeLog()
 {
-	var counter = null;
-	var mark = 0;
-	return {
-		report: function(){
-			if(counter === null)
-			{
-				mark = new Date().getTime();
-			}
+	var counter = 0;
+	var timestamp = new Date().getTime();
+	var fps = 0;
+	return function(context, width, height, mark, pressedkeys) {
 			counter++;
 
-			var took = new Date().getTime() - mark;
-
+			var took = new Date().getTime() - timestamp;
 
 			if( took > 1000 )
 			{
 				var load = took/counter;
-				var fps = 1000/load;
-				console.log(fps);
+				fps = 1000/load;
 				counter =0;
-
-				mark=new Date().getTime();
+				timestamp=new Date().getTime();
 			}
-		}
+			
+		context.fillStyle = "white";
+		context.font = "12px";
+		context.fillText( "FPS: " + Math.round(fps), 100, 40 );
 	};
 }
 
-function makeEngine( canvas, timer )
+function makeEngine( canvas )
 {
 	var workers = [];
 	var pressedkeys = [];
 	var triggerWork = function(context, width, height, mark )
 	{
-		if(timer!== undefined)
-			timer.report();
-
 		for (var worker in workers)
 		{
 			workers[worker](context, width, height, mark, pressedkeys);
 		}
 	};
-
 
 	document.onkeyup = function(){ pressedkeys = []; }
 
@@ -54,8 +46,13 @@ function makeEngine( canvas, timer )
 		{
 			keyCode = event.keyCode;
 		}
+		for( var k in pressedkeys )
+		{
+			if( pressedkeys[k] === keyCode )
+				return;
+		}
 		pressedkeys.push( keyCode );
-	}
+	};
 
 	var animate = function()
 	{
@@ -82,9 +79,6 @@ function makeEngine( canvas, timer )
 				window.setTimeout(callback, 1000 / 60);
 			};
 	})();
-
-
-
 
 	var startTime = undefined;
 
