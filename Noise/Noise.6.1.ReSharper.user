@@ -1,0 +1,751 @@
+<Configuration>
+  <SettingsComponent>
+    <string />
+    <integer />
+    <boolean>
+      <setting name="SolutionAnalysisEnabled">False</setting>
+    </boolean>
+  </SettingsComponent>
+  <CompletionStatisticsManager>
+    <ItemStatistics item="Default">
+      <Item value="Direct3D" priority="0" />
+      <Item value="InitializeDevice`0" priority="1" />
+      <Item value="mainForm" priority="1" />
+      <Item value="Vector3`0" priority="2" />
+      <Item value="_groupedTransform" priority="0" />
+      <Item value="timestamp" priority="0" />
+      <Item value="Length" priority="12" />
+      <Item value="CanSelect" priority="0" />
+      <Item value="DrawTriangle`0" priority="2" />
+      <Item value="coords" priority="0" />
+      <Item value="Action`0" priority="0" />
+      <Item value="Matrix`0" priority="1" />
+      <Item value="Color`0" priority="4" />
+      <Item value="SimpleActor`0" priority="2" />
+      <Item value="Form1_Resize`0" priority="0" />
+      <Item value="this" priority="0" />
+      <Item value="MakeArr`0" priority="0" />
+      <Item value="Size`0" priority="0" />
+      <Item value="DateTime`0" priority="1" />
+      <Item value="angle" priority="0" />
+      <Item value="_pausedDelay" priority="1" />
+      <Item value="TimeSpan`0" priority="1" />
+      <Item value="ClipStatusFlags`0" priority="0" />
+      <Item value="NewsStyleUriParser`0" priority="1" />
+      <Item value="mouseEventArgs" priority="0" />
+      <Item value="controlledCamera" priority="4" />
+      <Item value="keyPressEventArgs" priority="0" />
+      <Item value="InterpretPressedKeys`0" priority="1" />
+      <Item value="_perspectiveFovLh" priority="0" />
+      <Item value="MouseButtons" priority="1" />
+      <Item value="SimpleCameraMovement`0" priority="3" />
+      <Item value="triangleBufferSize" priority="1" />
+      <Item value="CustomVertex`0" priority="0" />
+      <Item value="Cull`0" priority="0" />
+      <Item value="vertices" priority="2" />
+      <Item value="VertexDeclaration`0" priority="0" />
+      <Item value="MakeColor`0" priority="0" />
+      <Item value="heightData" priority="1" />
+      <Item value="Height" priority="1" />
+      <Item value="TerrainWidth" priority="3" />
+      <Item value="TerrainHeight" priority="3" />
+      <Item value="Renderer_KeyDown`0" priority="0" />
+      <Item value="Renderer_KeyUp`0" priority="0" />
+      <Item value="Renderer_MouseUp`0" priority="0" />
+      <Item value="KeyDown" priority="0" />
+      <Item value="Keys`0" priority="0" />
+      <Item value="Resize" priority="1" />
+      <Item value="Security" priority="0" />
+      <Item value="Cryptography" priority="0" />
+      <Item value="AppDomain`0" priority="0" />
+      <Item value="MessageBox`0" priority="0" />
+      <Item value="FileInfo`0" priority="0" />
+      <Item value="targetFileName" priority="8" />
+      <Item value="Console`0" priority="0" />
+      <Item value="targetFolder" priority="5" />
+      <Item value="IDisposable`0" priority="0" />
+      <Item value="destination" priority="0" />
+      <Item value="_minimumTimePerFrame" priority="0" />
+      <Item value="timelefttillnewframe" priority="0" />
+      <Item value="presentParams" priority="1" />
+      <Item value="true" priority="0" />
+      <Item value="GraphicsException`0" priority="0" />
+      <Item value="CleanType`0" priority="0" />
+      <Item value="ClearFlags`0" priority="0" />
+      <Item value="gridSizeX" priority="0" />
+      <Item value="gridSizeY" priority="0" />
+      <Item value="_gridPointGradients" priority="1" />
+      <Item value="_gridSizeX" priority="3" />
+      <Item value="_gridSizeY" priority="4" />
+      <Item value="X" priority="1" />
+      <Item value="GradientFor`0" priority="1" />
+      <Item value="MakeRealCoords`0" priority="0" />
+      <Item value="Bitmap`0" priority="1" />
+      <Item value="AcceptButton" priority="0" />
+      <Item value="Invalidate`0" priority="0" />
+      <Item value="pictureBox" priority="3" />
+      <Item value="Width" priority="0" />
+      <Item value="PictureBox`0" priority="0" />
+      <Item value="FlowLayoutPanel`0" priority="0" />
+      <Item value="Point`0" priority="0" />
+      <Item value="length" priority="0" />
+      <Item value="ParticleActor`0" priority="0" />
+      <Item value="MemberAccessException`0" priority="0" />
+      <Item value="MemoryStream`0" priority="0" />
+      <Item value="particlecount" priority="1" />
+      <Item value="IEnumerable" priority="0" />
+      <Item value="particle" priority="0" />
+      <Item value="Select`2" priority="0" />
+      <Item value="SpriteVertexFormat`0" priority="0" />
+      <Item value="Position" priority="0" />
+      <Item value="VertexFormats`0" priority="3" />
+      <Item value="PrimitiveType`0" priority="1" />
+      <Item value="vecs" priority="0" />
+      <Item value="Y" priority="0" />
+      <Item value="Z" priority="0" />
+      <Item value="xMax" priority="2" />
+      <Item value="ProjectX2`0" priority="6" />
+      <Item value="AlphaFadingImage`0" priority="2" />
+      <Item value="transformedX" priority="2" />
+      <Item value="scalingFactor" priority="0" />
+      <Item value="Size" priority="0" />
+      <Item value="Image`0" priority="1" />
+      <Item value="size" priority="0" />
+      <Item value="algorithm" priority="0" />
+      <Item value="xMin" priority="0" />
+      <Item value="BackColor" priority="0" />
+      <Item value="projection" priority="1" />
+      <Item value="TestMethod`0" priority="0" />
+      <Item value="Generators" priority="3" />
+      <Item value="ImageFormatConverter`0" priority="0" />
+      <Item value="Blend`0" priority="1" />
+      <Item value="TextureLoader`0" priority="0" />
+      <Item value="TextureOperation`0" priority="0" />
+      <Item value="_gradients" priority="1" />
+      <Item value="GradientSizeTable" priority="1" />
+      <Item value="Math`0" priority="0" />
+      <Item value="index" priority="0" />
+      <Item value="BenchmarkNoise`0" priority="0" />
+      <Item value="PerlinRndInitNoise`0" priority="0" />
+      <Item value="_heightMap" priority="2" />
+      <Item value="RegenerateHeightMap`0" priority="2" />
+      <Item value="_heightMapGenerationTime" priority="0" />
+      <Item value="_dx" priority="0" />
+      <Item value="GenerateIndexMap`0" priority="0" />
+      <Item value="IndexArrayLength`0" priority="2" />
+      <Item value="_animate" priority="0" />
+      <Item value="_indexBuffer" priority="1" />
+      <Item value="_vertexBuffer" priority="1" />
+      <Item value="_xCount" priority="1" />
+      <Item value="_yCount" priority="1" />
+      <Item value="PercentageCompleteCallback`0" priority="0" />
+      <Item value="TerrainTransform`0" priority="1" />
+      <Item value="_scaleX" priority="0" />
+      <Item value="SingleColorImage`0" priority="0" />
+      <Item value="_scaleY" priority="0" />
+      <Item value="_scaleZ" priority="0" />
+      <Item value="_scaleOut" priority="1" />
+      <Item value="FloatNoise`0" priority="2" />
+      <Item value="_transform" priority="1" />
+      <Item value="outScale" priority="0" />
+      <Item value="_initializationTime" priority="1" />
+      <Item value="cameraTarget" priority="0" />
+      <Item value="TransformData`0" priority="2" />
+      <Item value="ScaleX" priority="0" />
+      <Item value="ScaleY" priority="0" />
+      <Item value="outp" priority="0" />
+      <Item value="_chordset" priority="0" />
+      <Item value="c" priority="0" />
+      <Item value="xCount" priority="1" />
+      <Item value="yCount" priority="0" />
+      <Item value="_meshTerrain" priority="1" />
+      <Item value="indexMap" priority="0" />
+      <Item value="long" priority="0" />
+      <Item value="LockFlags`0" priority="0" />
+      <Item value="LightManagement`0" priority="1" />
+      <Item value="_startX" priority="1" />
+      <Item value="_startY" priority="0" />
+      <Item value="MeshTileSize" priority="1" />
+      <Item value="PerlinTerrain`0" priority="0" />
+      <Item value="Mesh`0" priority="0" />
+      <Item value="tiles" priority="0" />
+      <Item value="LightType`0" priority="0" />
+      <Item value="AnimationData`0" priority="4" />
+      <Item value="loEdge" priority="2" />
+      <Item value="hiEdge" priority="0" />
+      <Item value="AnimationLoopSpan" priority="0" />
+      <Item value="RenderSpan" priority="0" />
+      <Item value="Generate`0" priority="0" />
+      <Item value="cameramovementposition" priority="0" />
+      <Item value="direction" priority="0" />
+      <Item value="StaticCamera`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Microsoft.DirectX.Direct3D.Device">
+      <Item value="Clear`0" priority="0" />
+      <Item value="DrawUserPrimitives`0" priority="2" />
+      <Item value="Transform" priority="10" />
+      <Item value="Lights" priority="4" />
+      <Item value="ValidateDevice`0" priority="0" />
+      <Item value="ClipStatus" priority="0" />
+      <Item value="RenderState" priority="18" />
+      <Item value="DrawIndexedPrimitives`0" priority="0" />
+      <Item value="DrawPrimitives`0" priority="0" />
+      <Item value="PixelShader" priority="0" />
+      <Item value="SetStreamSource`0" priority="0" />
+      <Item value="SetTexture`0" priority="0" />
+      <Item value="Material" priority="1" />
+      <Item value="VertexFormat" priority="0" />
+      <Item value="TextureState" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:WindowsFormsApplication3.Form1">
+      <Item value="InitializeDevice`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Noise.Form1">
+      <Item value="Show`0" priority="0" />
+      <Item value="Resize" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Nullable`1">
+      <Item value="Value" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.DateTime">
+      <Item value="AddSeconds`0" priority="1" />
+      <Item value="Ticks" priority="14" />
+      <Item value="Subtract`0" priority="3" />
+      <Item value="Cycle`0" priority="5" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Diagnostics.Debug">
+      <Item value="Write`0" priority="2" />
+      <Item value="WriteLine`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Microsoft.DirectX.Direct3D.CustomVertex">
+      <Item value="PositionNormal`0" priority="0" />
+      <Item value="PositionNormalColored`0" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Microsoft.DirectX.Matrix">
+      <Item value="RotationX`0" priority="5" />
+      <Item value="RotationZ`0" priority="0" />
+      <Item value="Scaling`0" priority="0" />
+      <Item value="Multiply`0" priority="1" />
+      <Item value="RotationY`0" priority="1" />
+      <Item value="Translation`0" priority="0" />
+      <Item value="RotationAxis`0" priority="0" />
+      <Item value="RotationYawPitchRoll`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Microsoft.DirectX.Direct3D.Transforms">
+      <Item value="World" priority="2" />
+      <Item value="Projection" priority="0" />
+      <Item value="View" priority="6" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Microsoft.DirectX.Matrix">
+      <Item value="Multiply`0" priority="1" />
+      <Item value="RotateX`0" priority="0" />
+      <Item value="RotateY`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Noise.IActor">
+      <Item value="Poke`0" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.DateTime">
+      <Item value="Now" priority="8" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Microsoft.VisualStudio.TestTools.UnitTesting.Assert">
+      <Item value="AreEqual`0" priority="8" />
+      <Item value="IsTrue`0" priority="0" />
+      <Item value="Fail`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:NoiseTest.Triangle">
+      <Item value="CoordList" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Collections.Generic.List`1">
+      <Item value="Count" priority="5" />
+      <Item value="Add`0" priority="3" />
+      <Item value="Remove`0" priority="0" />
+      <Item value="RemoveAll`0" priority="0" />
+      <Item value="Contains`0" priority="0" />
+      <Item value="Clear`0" priority="0" />
+      <Item value="Select`2" priority="0" />
+      <Item value="Insert`0" priority="1" />
+      <Item value="ToArray`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Noise.IDrawTriangles">
+      <Item value="Draw`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Noise.Generate">
+      <Item value="Random" priority="7" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Noise.MersenneTwister">
+      <Item value="NextNormal`0" priority="2" />
+      <Item value="NextDouble`0" priority="7" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Drawing.Color">
+      <Item value="FromArgb`0" priority="2" />
+      <Item value="Firebrick" priority="0" />
+      <Item value="Red" priority="3" />
+      <Item value="LemonChiffon" priority="0" />
+      <Item value="DeepSkyBlue" priority="1" />
+      <Item value="Gray" priority="0" />
+      <Item value="PaleGreen" priority="0" />
+      <Item value="Black" priority="2" />
+      <Item value="Blue" priority="0" />
+      <Item value="GhostWhite" priority="0" />
+      <Item value="Gold" priority="0" />
+      <Item value="DeepPink" priority="0" />
+      <Item value="Lavender" priority="0" />
+      <Item value="HotPink" priority="0" />
+      <Item value="Transparent" priority="1" />
+      <Item value="White" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Drawing.Color">
+      <Item value="ToArgb`0" priority="4" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Microsoft.DirectX.Direct3D.CustomVertex+PositionColored">
+      <Item value="Color" priority="3" />
+      <Item value="Position" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Noise.TerrainGen">
+      <Item value="_drawer" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Collections.Generic.IEnumerable`1">
+      <Item value="ToArray`1" priority="3" />
+      <Item value="First`1" priority="0" />
+      <Item value="Count`1" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Math">
+      <Item value="Round`0" priority="0" />
+      <Item value="PI" priority="5" />
+      <Item value="Sin`0" priority="1" />
+      <Item value="Cos`0" priority="0" />
+      <Item value="Pow`0" priority="2" />
+      <Item value="Floor`0" priority="1" />
+      <Item value="Abs`0" priority="0" />
+      <Item value="Ceiling`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Noise.Renderer">
+      <Item value="Size" priority="0" />
+      <Item value="MouseUp" priority="0" />
+      <Item value="KeyUp" priority="1" />
+      <Item value="KeyPress" priority="0" />
+      <Item value="KeyDown" priority="0" />
+      <Item value="_currentlyPressedKeys" priority="0" />
+      <Item value="Closing" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Microsoft.DirectX.Direct3D.Light">
+      <Item value="Position" priority="1" />
+      <Item value="Type" priority="0" />
+      <Item value="Attenuation1" priority="0" />
+      <Item value="Diffuse" priority="0" />
+      <Item value="Range" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Microsoft.DirectX.Direct3D.CustomVertex+PositionNormalColored">
+      <Item value="Normal" priority="8" />
+      <Item value="Position" priority="1" />
+      <Item value="Z" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Microsoft.DirectX.Vector3">
+      <Item value="Z" priority="0" />
+      <Item value="Normalize`0" priority="3" />
+      <Item value="Y" priority="1" />
+      <Item value="X" priority="1" />
+      <Item value="Length`0" priority="0" />
+      <Item value="Scale`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.TimeSpan">
+      <Item value="Add`0" priority="0" />
+      <Item value="Ticks" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Microsoft.DirectX.Direct3D.RenderStateManager">
+      <Item value="CullMode" priority="1" />
+      <Item value="FillMode" priority="0" />
+      <Item value="ZBufferEnable" priority="0" />
+      <Item value="PointSpriteEnable" priority="0" />
+      <Item value="PointScaleEnable" priority="0" />
+      <Item value="PointScaleC" priority="0" />
+      <Item value="SourceBlend" priority="0" />
+      <Item value="DestinationBlend" priority="0" />
+      <Item value="AlphaBlendEnable" priority="2" />
+      <Item value="AlphaDestinationBlend" priority="0" />
+      <Item value="BlendOperation" priority="0" />
+      <Item value="AlphaSourceBlend" priority="0" />
+      <Item value="AlphaFunction" priority="0" />
+      <Item value="AlphaTestEnable" priority="0" />
+      <Item value="DiffuseMaterialSource" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Microsoft.DirectX.Direct3D.Cull">
+      <Item value="None" priority="2" />
+      <Item value="Clockwise" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Forms.KeyPressEventArgs">
+      <Item value="KeyChar" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Noise.ControlledCamera">
+      <Item value="Interpret`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Windows.Forms.Keys">
+      <Item value="Up" priority="0" />
+      <Item value="Down" priority="0" />
+      <Item value="ControlKey" priority="0" />
+      <Item value="LControlKey" priority="0" />
+      <Item value="PageDown" priority="0" />
+      <Item value="PageUp" priority="0" />
+      <Item value="Insert" priority="0" />
+      <Item value="Space" priority="0" />
+      <Item value="Back" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Forms.KeyEventArgs">
+      <Item value="KeyCode" priority="6" />
+      <Item value="KeyData" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Forms.Keys">
+      <Item value="Equals`0" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Forms.MouseEventArgs">
+      <Item value="Button" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Forms.MouseButtons">
+      <Item value="Right" priority="0" />
+      <Item value="Left" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Microsoft.DirectX.Direct3D.FillMode">
+      <Item value="Solid" priority="1" />
+      <Item value="WireFrame" priority="0" />
+      <Item value="Point" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Microsoft.DirectX.Direct3D.DeviceType">
+      <Item value="Reference" priority="0" />
+      <Item value="Hardware" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Noise.SimpleCameraMovement">
+      <Item value="Poke`0" priority="0" />
+      <Item value="Radii" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:DirectX_Tutorial.WinForm">
+      <Item value="KeyDown" priority="1" />
+      <Item value="MouseDown" priority="0" />
+      <Item value="Resize" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Microsoft.DirectX.Direct3D.Mesh">
+      <Item value="DrawSubset`0" priority="0" />
+      <Item value="SetIndexBufferData`0" priority="0" />
+      <Item value="SetVertexBufferData`0" priority="0" />
+      <Item value="ComputeNormals`0" priority="0" />
+      <Item value="VertexBuffer" priority="1" />
+      <Item value="IndexBuffer" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.AppDomain">
+      <Item value="CurrentDomain" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.AppDomain">
+      <Item value="FriendlyName" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Windows.Forms.MessageBox">
+      <Item value="Show`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Noise.Crc32">
+      <Item value="GetCrc32`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.IO.File">
+      <Item value="OpenRead`0" priority="0" />
+      <Item value="Exists`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.UInt32">
+      <Item value="AsHex`0" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.UInt32">
+      <Item value="MaxValue" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.IO.FileInfo">
+      <Item value="MoveTo`0" priority="0" />
+      <Item value="CopyTo`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.String">
+      <Item value="Concat`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Console">
+      <Item value="WriteLine`0" priority="3" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.IO.Path">
+      <Item value="Combine`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.IO.Directory">
+      <Item value="Exists`0" priority="0" />
+      <Item value="CreateDirectory`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Threading.Thread">
+      <Item value="Start`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Noise.Synchronizer">
+      <Item value="Start`0" priority="0" />
+      <Item value="Break`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Threading.Thread">
+      <Item value="Sleep`0" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Noise.ICanPaint">
+      <Item value="Repaint`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Microsoft.DirectX.Direct3D.CreateFlags">
+      <Item value="HardwareVertexProcessing" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Microsoft.DirectX.Direct3D.PrimitiveType">
+      <Item value="TriangleFan" priority="0" />
+      <Item value="PointList" priority="0" />
+      <Item value="TriangleList" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Microsoft.DirectX.Direct3D.PresentParameters">
+      <Item value="AutoDepthStencilFormat" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Microsoft.DirectX.Direct3D.DepthFormat">
+      <Item value="D16" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Microsoft.DirectX.Direct3D.ClearFlags">
+      <Item value="ZBuffer" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:NoiseTest.Vector">
+      <Item value="X" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:NoiseTest.Vector`1">
+      <Item value="X" priority="1" />
+      <Item value="Y" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:NoiseTest.DVector">
+      <Item value="X" priority="0" />
+      <Item value="Y" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:NoiseTest.CVector">
+      <Item value="X" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:NoiseTest.LolGraph">
+      <Item value="Show`0" priority="0" />
+      <Item value="Controls" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Forms.PaintEventArgs">
+      <Item value="Graphics" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:NoiseTest.PerlinGenerator">
+      <Item value="Make`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Drawing.Graphics">
+      <Item value="DrawRectangle`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Forms.Control+ControlCollection">
+      <Item value="Add`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Forms.FlowLayoutPanel">
+      <Item value="Controls" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Forms.PictureBox">
+      <Item value="Location" priority="1" />
+      <Item value="Image" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Double">
+      <Item value="Weighted`0" priority="2" />
+      <Item value="Linear`0" priority="2" />
+      <Item value="Normalize`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Microsoft.DirectX.Direct3D.TextureLoader">
+      <Item value="FromStream`0" priority="1" />
+      <Item value="FromFile`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Drawing.Bitmap">
+      <Item value="SetPixel`0" priority="0" />
+      <Item value="Save`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Drawing.Imaging.ImageFormat">
+      <Item value="Bmp" priority="0" />
+      <Item value="Png" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.IO.MemoryStream">
+      <Item value="Position" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Microsoft.DirectX.Direct3D.VertexFormats">
+      <Item value="Position" priority="0" />
+      <Item value="PointSize" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Noise.Generators.AlphaFadingImage">
+      <Item value="Image`0" priority="1" />
+      <Item value="Stream`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Drawing.Size">
+      <Item value="Height" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Microsoft.DirectX.Direct3D.Material">
+      <Item value="Ambient" priority="0" />
+      <Item value="Diffuse" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Microsoft.DirectX.Direct3D.Blend">
+      <Item value="One" priority="1" />
+      <Item value="DestinationAlpha" priority="3" />
+      <Item value="SourceAlpha" priority="3" />
+      <Item value="DestinationColor" priority="4" />
+      <Item value="InvDestinationAlpha" priority="2" />
+      <Item value="InvDestinationColor" priority="1" />
+      <Item value="InvSourceAlpha" priority="1" />
+      <Item value="SourceColor" priority="3" />
+      <Item value="BlendFactor" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Microsoft.DirectX.Direct3D.Compare">
+      <Item value="Greater" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Microsoft.DirectX.Direct3D.ColorSource">
+      <Item value="Material" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Microsoft.DirectX.Direct3D.TextureStateManager">
+      <Item value="ColorOperation" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Microsoft.DirectX.Direct3D.TextureOperation">
+      <Item value="Modulate" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Noise.Helpers.Generate">
+      <Item value="Random" priority="3" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Noise.Generators.GradientVector">
+      <Item value="X" priority="6" />
+      <Item value="Y" priority="1" />
+      <Item value="Z" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Noise.Generators.GradientVector`1">
+      <Item value="Dot`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Noise.Generators.PerlinNoise+GradientVector">
+      <Item value="Y" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Single">
+      <Item value="Weighted`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Noise.Generators.BenchmarkNoise">
+      <Item value="Noise`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Noise.Actors.Terrain.PerlinTerrain">
+      <Item value="IndexArrayLength`0" priority="1" />
+      <Item value="Indices" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Diagnostics.Trace">
+      <Item value="WriteLine`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Windows.Forms.Application">
+      <Item value="Exit`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Noise.Generators.IMakeNoise">
+      <Item value="Noise`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Noise.Generators.ITransformNoise">
+      <Item value="Make`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Noise.Generators.TransformData">
+      <Item value="ScaleX" priority="0" />
+      <Item value="ScaleY" priority="0" />
+      <Item value="ScaleZ" priority="0" />
+      <Item value="OutWeigth" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Microsoft.DirectX.Direct3D.MeshFlags">
+      <Item value="Managed" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Microsoft.DirectX.Direct3D.CustomVertex+PositionNormalColored">
+      <Item value="Format" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Microsoft.DirectX.Direct3D.LockFlags">
+      <Item value="NoSystemLock" priority="0" />
+      <Item value="None" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Microsoft.DirectX.Direct3D.VertexBuffer">
+      <Item value="SetData`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Microsoft.DirectX.Direct3D.IndexBuffer">
+      <Item value="SetData`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Microsoft.DirectX.Direct3D.LightType">
+      <Item value="Point" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.TimeSpan">
+      <Item value="FromMinutes`0" priority="0" />
+      <Item value="FromSeconds`0" priority="0" />
+      <Item value="FromMilliseconds`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Int32">
+      <Item value="Minutes`0" priority="2" />
+      <Item value="Seconds`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Noise.AnimationData">
+      <Item value="ShouldAnimate" priority="1" />
+      <Item value="RenderSpan" priority="0" />
+      <Item value="MinZ" priority="0" />
+      <Item value="MaxZ" priority="0" />
+      <Item value="AnimationLoopSpan" priority="0" />
+    </ItemStatistics>
+  </CompletionStatisticsManager>
+  <RecentFiles>
+    <RecentFiles>
+      <File id="BFAC72E0-B9E3-4FC1-A72F-C66B37200AF8/f:PerlinGenerator.cs" caret="0" fromTop="0" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/f:DrawTriangle.cs" caret="614" fromTop="34" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Actors/d:MinorObjects/f:PortedActor.cs" caret="0" fromTop="0" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Actors/d:MinorObjects/f:SimpleActor.cs" caret="2846" fromTop="37" />
+      <File id="BFAC72E0-B9E3-4FC1-A72F-C66B37200AF8/f:TerrainTests.cs" caret="273" fromTop="14" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Generators/f:ITransformNoise.cs" caret="83" fromTop="4" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Generators/f:TransformData.cs" caret="0" fromTop="0" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/f:Program.cs" caret="250" fromTop="16" />
+      <File id="BFAC72E0-B9E3-4FC1-A72F-C66B37200AF8/f:WorkBench.cs" caret="484" fromTop="11" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Actors/f:LightManagement.cs" caret="329" fromTop="18" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Generators/f:IMakeNoise.cs" caret="73" fromTop="4" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Generators/f:ScaleTransform.cs" caret="629" fromTop="25" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/f:AnimationData.cs" caret="102" fromTop="7" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/f:Synchronizer.cs" caret="993" fromTop="27" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Helpers/f:Generate.cs" caret="545" fromTop="21" />
+      <File id="BFAC72E0-B9E3-4FC1-A72F-C66B37200AF8/f:PerlinTimingBenchmarks.cs" caret="685" fromTop="22" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Generators/f:GradientVector.cs" caret="39" fromTop="2" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Helpers/f:FloatExt.cs" caret="104" fromTop="4" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Helpers/f:VecExt.cs" caret="0" fromTop="0" />
+      <File id="BFAC72E0-B9E3-4FC1-A72F-C66B37200AF8/f:PerlinTests.cs" caret="942" fromTop="24" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Actors/d:Camera/f:RotatingCameraMovement.cs" caret="929" fromTop="33" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Actors/d:Camera/f:SimpleCameraMovement.cs" caret="1223" fromTop="34" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Generators/f:Chord.cs" caret="0" fromTop="0" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Generators/f:FloatNoise.cs" caret="685" fromTop="18" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Actors/d:Terrain/f:TiledTerrain.cs" caret="756" fromTop="17" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Actors/d:MinorObjects/f:OrbitDemoActor.cs" caret="1006" fromTop="35" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Helpers/f:Cycler.cs" caret="232" fromTop="9" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Actors/d:Terrain/f:PerlinTerrain.cs" caret="2374" fromTop="20" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/f:Renderer.cs" caret="3298" fromTop="20" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Actors/d:Camera/f:StaticCamera.cs" caret="126" fromTop="6" />
+    </RecentFiles>
+    <RecentEdits>
+      <File id="BFAC72E0-B9E3-4FC1-A72F-C66B37200AF8/f:PerlinTimingBenchmarks.cs" caret="779" fromTop="19" />
+      <File id="BFAC72E0-B9E3-4FC1-A72F-C66B37200AF8/f:PerlinTimingBenchmarks.cs" caret="705" fromTop="15" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Generators/f:FloatNoise.cs" caret="3590" fromTop="25" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/f:Renderer.cs" caret="3580" fromTop="17" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Actors/d:Terrain/f:PerlinTerrain.cs" caret="658" fromTop="17" />
+      <File id="BFAC72E0-B9E3-4FC1-A72F-C66B37200AF8/f:PerlinTimingBenchmarks.cs" caret="1160" fromTop="32" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Generators/f:FloatNoise.cs" caret="279" fromTop="3" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Generators/f:FloatNoise.cs" caret="2412" fromTop="27" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Generators/f:FloatNoise.cs" caret="3011" fromTop="27" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Generators/f:GradientVector.cs" caret="39" fromTop="2" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Actors/d:MinorObjects/f:OrbitDemoActor.cs" caret="266" fromTop="5" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Actors/d:MinorObjects/f:OrbitDemoActor.cs" caret="682" fromTop="11" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Actors/d:MinorObjects/f:OrbitDemoActor.cs" caret="342" fromTop="9" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Actors/d:MinorObjects/f:OrbitDemoActor.cs" caret="1193" fromTop="8" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Helpers/f:Cycler.cs" caret="261" fromTop="12" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Actors/d:MinorObjects/f:OrbitDemoActor.cs" caret="953" fromTop="12" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Actors/d:MinorObjects/f:OrbitDemoActor.cs" caret="614" fromTop="11" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Actors/d:Camera/f:SimpleCameraMovement.cs" caret="1337" fromTop="9" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Actors/d:Camera/f:SimpleCameraMovement.cs" caret="1337" fromTop="19" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Actors/d:Camera/f:SimpleCameraMovement.cs" caret="1337" fromTop="6" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Actors/d:Camera/f:SimpleCameraMovement.cs" caret="1340" fromTop="24" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Actors/d:Camera/f:SimpleCameraMovement.cs" caret="1337" fromTop="19" />
+      <File id="BFAC72E0-B9E3-4FC1-A72F-C66B37200AF8/f:PerlinTests.cs" caret="776" fromTop="18" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Actors/d:Camera/f:SimpleCameraMovement.cs" caret="1337" fromTop="0" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Actors/d:Camera/f:RotatingCameraMovement.cs" caret="0" fromTop="0" />
+      <File id="BFAC72E0-B9E3-4FC1-A72F-C66B37200AF8/f:PerlinTests.cs" caret="942" fromTop="24" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Actors/d:Camera/f:RotatingCameraMovement.cs" caret="929" fromTop="20" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/d:Actors/d:Terrain/f:PerlinTerrain.cs" caret="2374" fromTop="20" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/f:Renderer.cs" caret="3928" fromTop="30" />
+      <File id="2E083BC3-0D8B-4E95-B86E-94E216C87899/f:Renderer.cs" caret="3304" fromTop="20" />
+    </RecentEdits>
+  </RecentFiles>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <UnitTestRunner>
+    <Providers />
+  </UnitTestRunner>
+  <UnitTestRunnerNUnit>
+    <NUnitInstallDir IsNull="False" />
+    <UseAddins>Never</UseAddins>
+  </UnitTestRunnerNUnit>
+</Configuration>

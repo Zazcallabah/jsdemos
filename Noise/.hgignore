@@ -1,0 +1,6 @@
+/bin$
+/obj$
+/.metadata$
+^TestResults
+.git
+^release

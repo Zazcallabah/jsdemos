@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1054FF9A-99E2-4325-9BFE-295F49DAB551}"
+	ProjectSection(SolutionItems) = preProject
+		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+		Noise.vsmdi = Noise.vsmdi
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Noise", "Noise\Noise.csproj", "{2E083BC3-0D8B-4E95-B86E-94E216C87899}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB7CDD26-FFA1-48AD-9C51-CC76DD1920A1} = {CB7CDD26-FFA1-48AD-9C51-CC76DD1920A1}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoiseTest", "NoiseTest\NoiseTest.csproj", "{BFAC72E0-B9E3-4FC1-A72F-C66B37200AF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HashName", "HashName\HashName.csproj", "{CB7CDD26-FFA1-48AD-9C51-CC76DD1920A1}"
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Noise.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2E083BC3-0D8B-4E95-B86E-94E216C87899}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E083BC3-0D8B-4E95-B86E-94E216C87899}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E083BC3-0D8B-4E95-B86E-94E216C87899}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E083BC3-0D8B-4E95-B86E-94E216C87899}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFAC72E0-B9E3-4FC1-A72F-C66B37200AF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFAC72E0-B9E3-4FC1-A72F-C66B37200AF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFAC72E0-B9E3-4FC1-A72F-C66B37200AF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFAC72E0-B9E3-4FC1-A72F-C66B37200AF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB7CDD26-FFA1-48AD-9C51-CC76DD1920A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB7CDD26-FFA1-48AD-9C51-CC76DD1920A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB7CDD26-FFA1-48AD-9C51-CC76DD1920A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB7CDD26-FFA1-48AD-9C51-CC76DD1920A1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
