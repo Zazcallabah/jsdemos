@@ -69,7 +69,7 @@ function makeEngine( canvas )
 		});
 	};
 
-	window.requestAnimFrame = (function(callback){
+	window.requestAnimFrame = (function(){
 		return window.requestAnimationFrame ||
 			window.webkitRequestAnimationFrame ||
 			window.mozRequestAnimationFrame ||

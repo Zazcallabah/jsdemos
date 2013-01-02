@@ -1,8 +1,8 @@
 var makeView = function(start, xdir, ydir, ping_callback )
 {
-	var default_position = vec();
-	var default_u = vec({x:1,y:0,z:0}).unit()
-	var default_v = vec({x:0,y:1,z:0}).unit();
+	var default_position = new Vec();
+	var default_u = new Vec([1,0,0]).unit();
+	var default_v = new Vec([0,1,0]).unit();
 	
 	var pos = start || default_position;
 	var u = xdir || default_u;
@@ -28,7 +28,7 @@ var makeView = function(start, xdir, ydir, ping_callback )
 		var rx = u*(u*x+v*y+w*z)*(1-cos)+x*cos+(-1*w*y+v*z)*sin;
 		var ry = v*(u*x+v*y+w*z)*(1-cos)+y*cos+(w*x-u*z)*sin;
 		var rz = w*(u*x+v*y+w*z)*(1-cos)+z*cos+(-1*v*x+u*y)*sin;
-		return vec({x:rx,y:ry,z:rz});
+		return new Vec([rx,ry,rz]);
 	};
 
 	return {
@@ -105,9 +105,9 @@ var makeView = function(start, xdir, ydir, ping_callback )
 			context.stroke();
 		};
 		
-		drawAxis( "red", vec({x:0,y:0,z:1}));
-		drawAxis( "green", vec({x:0,y:1,z:0}));
-		drawAxis( "blue", vec({x:1,y:0,z:0}));
+		drawAxis( "red", new Vec([0,0,1]));
+		drawAxis( "green", new Vec([0,1,0]));
+		drawAxis( "blue", new Vec([1,0,0]));
 		
 		context.fillStyle = "white";
 		context.font = "12px";

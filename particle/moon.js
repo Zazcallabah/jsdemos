@@ -9,100 +9,78 @@ var makeInterstellar = function( radius, position, color )
 		pos: function() {return _pos;},
 		style: function(){return _color;}
 	};
-}
-var makeSun = function()
-{
-	return makeInterstellar( 7e8, vec({x:1.496e11,y:0,z:0}), "yellow" );
-};
-
-var makeMoon = function()
-{
-	return makeInterstellar( 1.7371e6, vec({x:-3844e5,y:0,z:0}), "white" );
-};
-
-var makeEarth = function()
-{
-	return makeInterstellar( 6.4e6, vec(), "blue" );
 };
 
 var _t89c = makeT89C();
 var _RE = 6.378e6;
+var _c = 3e8;
+var _c2 = _c*_c;
 
 // energy decides particle speed, velocity is only the unit vector for the velocity direction
-var makeParticle = function( energy, position, velocity, halt )
+function Particle( energy, position, velocity, halt )
 {
 	// this whole function is a javascript port of the brilliant work of Emelie Holm. Without her thesis, this simulation would be very boring indeed.
 	var eV = 1.60218e-19;
-	var c = 3e8;
-	var RE = _RE;
-	var c2 = c*c;
-	var q = 1.602e-19;
-	var m = 1.6726e-27;
-	var style = "#77F";
-	var radius = 6e5;
+	this._q = 1.602e-19;
+	this._m = 1.6726e-27;
+	this._style = "#77F";
+	this._radius = 6e5;
+	this._halt =halt;
 
 
 	var E = (energy  || 1e6)*eV;
 
-	var iopt = 3;
-	var ps = 0;
-	var emc = (E/(m*c2)+1);
-	var absv = c*Math.sqrt( 1 - 1/(emc*emc));
-	var g = 1/Math.sqrt(1-(absv*absv)/c2);
+	var emc = (E/(this._m*_c2)+1);
+	var absv = _c*Math.sqrt( 1 - 1/(emc*emc));
+	var g = 1/Math.sqrt(1-(absv*absv)/_c2);
 
-	var r = position;
-	var v = (velocity || vec({
-		x: (Math.random()-0.5),
-		y:(Math.random()-0.5),
-		z: (Math.random()-0.5)
-	}).unit()).mul(absv);
-	var p = v.mul(m*g);
+	this._r = position;
+	this._v = (velocity || new Vec([
+		 (Math.random()-0.5),
+		(Math.random()-0.5),
+		 (Math.random()-0.5)
+	]).unit()).mul(absv);
+	this._p = this._v.mul(this._m*g);
 
-	var ef_pos = position;
-	var we_are_done = false;
+	this.ef_pos = position;
+	this.we_are_done = false;
+};
 
-	return {
-		pos: function() { return ef_pos; },
-		tick: function(dt) {
-			if( we_are_done )
+		Particle.prototype.pos = function() { return this.ef_pos; };
+		Particle.prototype.tick = function(dt) {
+
+			if( this.we_are_done )
 			{
 				return
 			}
 
-			if( halt !== undefined )
+			if( this._halt !== undefined )
 			{
-				we_are_done = halt( this.pos() );
-				if( we_are_done )
+				this.we_are_done = this._halt( this.pos() );
+				if( this.we_are_done )
 				{
-					style = "red";
-					radius = 1e5;
+					this._style = "red";
+					this._radius = 1e5;
 				}
 			}
 
-			var t_b = _t89c( iopt,[],ps, r.x()/RE, r.y()/RE, r.z()/RE );
-			if( t_b.bx === NaN )
-				t_b.bx = 0;
-			if( t_b.by === NaN )
-				t_b.by = 0;
-			if( t_b.bz === NaN )
-				t_b.bz = 0;
-			var B_field = vec({x:t_b.bx,y:t_b.by,z:t_b.bz}).mul( 1e-9 );
+			var t_b = _t89c( 3,[],0, this._r.x()/_RE, this._r.y()/_RE, this._r.z()/_RE );
 
-			var A = v.mul(q);
+        	var B_field =new Vec([t_b.bx,t_b.by,t_b.bz]).mul( 1e-9 );
+
+			var A = this._v.mul(this._q);
 			var F = A.cross(B_field);
 
-			p = p.add( F.mul(dt) );
-			var pabs = p.abs();
-			v = p.mul(1/Math.sqrt(m*m+(pabs*pabs)/c2));
-			r = r.add(v.mul(dt) );
+			this._p = this._p.add( F.mul(dt) );
+			var pabs = this._p.abs();
+			this._v = this._p.mul(1/Math.sqrt(this._m*this._m+(pabs*pabs)/_c2));
+			this._r = this._r.add(this._v.mul(dt) );
 
 
-			ef_pos = vec({x:r.x(),y:r.y(),z:r.z()});
-		},
-		r: function(){ return radius;},
-		style: function(){return style;}
-	};
-};
+			this.ef_pos = new Vec(this._r.data);
+		};
+		Particle.prototype.r = function(){ return this._radius;};
+		Particle.prototype.style = function(){return this._style;};
 
 var setVpMovementActions = function( view )
 {
@@ -111,8 +89,8 @@ var setVpMovementActions = function( view )
 	};
 	var addMoveActions = function( a, s, selector )
 	{
-		view.addAction( a, function(vp,c){ movevp( vp, selector(vp), 1e6*(c===undefined?1:10) ) } );
-		view.addAction( s, function(vp,c){ movevp( vp, selector(vp), -1e6*(c===undefined?1:10) ) } );
+		view.addAction( a, function(vp,c){ movevp( vp, selector(vp), 1e6*(c===undefined?1:20) ) } );
+		view.addAction( s, function(vp,c){ movevp( vp, selector(vp), -1e6*(c===undefined?1:20) ) } );
 	};
 	addMoveActions( 87, 83, function(vp){ return vp.n() } ); // w s
 	addMoveActions( 68, 65, function(vp){ return vp.u() } ); // d a
@@ -131,7 +109,7 @@ var setVpMovementActions = function( view )
 	};
 
 	addRotActions( 73,75,function(vp){return vp.u() }); //ik
-	addRotActions( 74,76,function(vp){return vp.v() }); //jl
+	addRotActions( 76,74,function(vp){return vp.v() }); //lj
 	addRotActions( 79,85,function(vp){return vp.n() }); //ou
 };
 
@@ -166,8 +144,8 @@ var setParticleControlActions = function( view, drawlist )
 		for( var j = -100e6; j< 101e6; j+=35e6 )
 			for( var k = -100e6; k< 101e6; k+=36e6 )
 			{
-				var part_pos = moon.pos().mul(0.5).add(vec({x:i,y:j,z:k}));
-				drawlist.push( makeParticle(
+				var part_pos = moon.pos().mul(0.5).add(new Vec([i,j,k]));
+				drawlist.push( new Particle(
 					1e8,
 					part_pos,
 					moon.pos().sub(part_pos).unit(),
@@ -181,7 +159,7 @@ var setParticleControlActions = function( view, drawlist )
 			}
 	});
 	
-	var energies = [1e6,1e7,1e8,1e9,1e4*1e6,1e5*1e6,1e6*1e6];
+	var energies = [1e6,1e7,1e8,1e9,1e10,1e11,1e12];
 	var MJ = 3844e5;
 	var energycounter = 0;
 	var selectenergy = function()
@@ -200,10 +178,10 @@ var setParticleControlActions = function( view, drawlist )
 			for( var j = 1; j<37;j++)
 			{
 				var theta = j*10*Math.PI/180;
-				var r = vec({x:(-MJ+(MJ+10*_RE)*Math.cos(theta)),
-					y:(MJ+10*_RE)*Math.sin(theta),z: 0});
-				var v = vec({x: -Math.cos(theta),y: -Math.sin(theta),z: 0}).unit();
-				drawlist.push( makeParticle( energy, r, v,
+				var r = new Vec([(-MJ+(MJ+10*_RE)*Math.cos(theta)),
+					(MJ+10*_RE)*Math.sin(theta), 0]);
+				var v = new Vec([-Math.cos(theta),-Math.sin(theta),0]).unit();
+				drawlist.push( new Particle( energy, r, v,
 					function(p){
 					if(p.sub(moon.pos()).abs() < moon.r() )
 					{
@@ -227,9 +205,9 @@ var setParticleControlActions = function( view, drawlist )
 		for( var i = 0; i<50;i++)
 		{
 			var theta = i * (2/50)*Math.PI;
-			var directionv = vec({x:Math.sin(theta),y:Math.cos(theta),z:0});
+			var directionv = new Vec([Math.sin(theta),Math.cos(theta),0]);
 			var part_pos = moon.pos().add( directionv.mul(MJ) );
-			drawlist.push( makeParticle(
+			drawlist.push( new Particle(
 				energy,
 				part_pos,
 				moon.pos().sub(part_pos).unit(),
@@ -248,11 +226,12 @@ var setParticleControlActions = function( view, drawlist )
 
 var makeMoonSim = function()
 {
+	var sundist = 1.52e11;
 	var drawables = [];
-	var moon = makeMoon();
-	var earth = makeEarth();
-	var sun  = makeSun();
-	var vp_start = moon.pos().add(vec({x:0,y:0,z:-1*_RE*30}));
+	var moon = makeInterstellar( 1.7371e6, new Vec([-3844e5,0,0]), "white" );
+	var earth = makeInterstellar( 6.4e6, new Vec(), "blue" );
+	var sun  = makeInterstellar( 7e8, new Vec([sundist,0,0]), "yellow" );
+	var vp_start = moon.pos().add(new Vec([0,0,-1*_RE*30]));
 	var xdir = undefined;
 	var ydir = undefined;
 	
@@ -261,7 +240,7 @@ var makeMoonSim = function()
 		if( data !== null && data !== undefined )
 		{
 			var parsed = JSON.parse(data);
-			setter(vec(parsed));
+			setter(new Vec(parsed));
 		}
 	};
 	
@@ -274,7 +253,7 @@ var makeMoonSim = function()
 	
 	var setStorageVec = function( label, v )
 	{
-		var jsonData = JSON.stringify( {x:v.x(),y:v.y(),z:v.z()} );
+		var jsonData = JSON.stringify( v.data );
 		localStorage.setItem(label,jsonData);
 	};
 	
@@ -294,7 +273,19 @@ var makeMoonSim = function()
 	drawables.push(moon);
 	drawables.push(earth);
 	drawables.push(sun);
-	
+
+	drawables.push( makeInterstellar( 2.5e6, new Vec([sundist-6.982e10,0,0]), "white" ) ); //mercury
+	drawables.push( makeInterstellar( 6e6, new Vec([sundist-1.089e11,0,0]), "white" ) ); //venus
+	drawables.push( makeInterstellar( 3.3e6, new Vec([sundist-2.49e11,0,0]), "red" ) ); //mars
+
+	drawables.push( makeInterstellar( 7e7, new Vec([sundist-8.16e11,0,0]), "orange" ) ); //jupiter
+	drawables.push( makeInterstellar( 6e7, new Vec([sundist-1.513e12,0,0]), "gold" ) ); //saturn
+	drawables.push( makeInterstellar( 2.5e7, new Vec([sundist-3e12,0,0]), "cyan" ) ); //uranus
+	drawables.push( makeInterstellar( 2.4e7, new Vec([sundist-4.553e12,0,0]), "#aaf" ) ); //neptune
+
+
+
+
 	setParticleControlActions( viewport, drawables );
 	
 	var lastmark = -1;
