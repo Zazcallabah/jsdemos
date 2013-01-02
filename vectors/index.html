@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+		body{background:gray;color:white;}
+		a{color:black}
+	</style>
+	<script type="text/javascript" src="vec.js"></script>
+	<script type="text/javascript" src="engine.js"></script>
+	<script type="text/javascript" src="view.js"></script>
+	<script type="text/javascript" src="vecmath.js"></script>
+
+	<script type="text/javascript">
+		var _engine = undefined;
+		var _math = undefined;
+		var run = function(){
+			var v1 = document.getElementById("v1").value;
+			var v2 = document.getElementById("v2").value;
+			var op = document.getElementById("op").value;
+			_math.action(v1,v2,op);
+		};
+		window.onload = function(){
+		_engine = makeEngine(document.getElementById("example"));
+		_math = makeVectorMath();
+		_engine.add( makeLog() );
+		_engine.add( _math.draw );
+		_engine.start();
+	};
+	</script>
+</head>
+<body style="height: 100%;padding:0;margin:0">
+<canvas id="example" style="height:85%;width:100%"></canvas>
+<p>
+V1: <input id="v1" type="textbox"/> V2: <input id="v2" type="textbox"/><br/>
+Op: <select id="op" ><option value="cross">Cross</option><option value="dot">Dot</option><option value="norm">Norm</option></select> <button onclick="run()">Go</button></p>
+</body>
+</html>
